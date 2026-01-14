@@ -2,7 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { email, z } from "zod";
+import Link from "next/link";
+import { z } from "zod";
 
 import {
   Card,
@@ -14,7 +15,6 @@ import {
 import { DottedSeparator } from "@/components/dotted-separator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import {
   Form,
   FormControl,
@@ -145,6 +145,19 @@ export const SignUpCard = () => {
           <FaGithub className="mr-2 size-5" />
           Login with Github
         </Button>
+      </CardContent>
+
+      <div className="px-7">
+        <DottedSeparator />
+      </div>
+
+      <CardContent className="p-7 flex items-center justify-center">
+        <p>
+          Already have an account?{" "}
+          <Link href={"/sign-in"}>
+            <span className="text-blue-700">Sign In</span>
+          </Link>
+        </p>
       </CardContent>
     </Card>
   );
