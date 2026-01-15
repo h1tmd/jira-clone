@@ -1,4 +1,4 @@
-import { setCookie } from "hono/cookie";
+import { deleteCookie, setCookie } from "hono/cookie";
 import { ID } from "node-appwrite";
 import { Hono } from "hono";
 
@@ -37,6 +37,11 @@ const app = new Hono()
       sameSite: "strict",
       maxAge: 60 * 60 * 24 * 30,
     });
+
+    return c.json({ success: true });
+  })
+  .post("/logout", (c) => {
+    deleteCookie(c, AUTH_COOKIE);
 
     return c.json({ success: true });
   });
