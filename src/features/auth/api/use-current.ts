@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { client } from "@/lib/rpc";
 
+/** Fetches current logged in user */
 export const useCurrent = () => {
   const query = useQuery({
     queryKey: ["current"],
