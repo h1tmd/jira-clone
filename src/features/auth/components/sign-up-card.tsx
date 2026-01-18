@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -22,16 +24,14 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-
-const formSchema = z.object({
-  name: z.string().min(1, "Required"),
-  email: z.email(),
-  password: z.string().min(8, "Minimum of 8 characters required"),
-});
+import { registerSchema } from "../schemas";
+import { useRegister } from "../api/use-register";
 
 export const SignUpCard = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { mutate, isPending } = useRegister();
+
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -39,8 +39,8 @@ export const SignUpCard = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({ values });
+  const onSubmit = (values: z.infer<typeof registerSchema>) => {
+    mutate({ json: values });
   };
 
   return (
@@ -115,8 +115,8 @@ export const SignUpCard = () => {
                 </FormItem>
               )}
             />
-            <Button disabled={false} size={"lg"} className="w-full">
-              Login
+            <Button disabled={isPending} size={"lg"} className="w-full">
+              Register
             </Button>
           </form>
         </Form>
@@ -128,7 +128,7 @@ export const SignUpCard = () => {
 
       <CardContent className="p-7 flex flex-col gap-y-4">
         <Button
-          disabled={false}
+          disabled={isPending}
           variant={"secondary"}
           size={"lg"}
           className="w-full"
@@ -137,7 +137,7 @@ export const SignUpCard = () => {
           Login with Google
         </Button>
         <Button
-          disabled={false}
+          disabled={isPending}
           variant={"secondary"}
           size={"lg"}
           className="w-full"
