@@ -1,18 +1,19 @@
+import { ID, Query } from "node-appwrite";
 import { Hono } from "hono";
 
 import { zValidator } from "@hono/zod-validator";
 
 import { sessionMiddleware } from "@/lib/session-middleware";
+import { generateInviteCode } from "@/lib/utils";
 import { MemberRole } from "@/features/members/types";
-
-import { createWorkspaceSchema } from "../schemas";
 import {
   DATABASE_ID,
   IMAGES_BUCKET_ID,
   MEMBERS_ID,
   WORKSPACES_ID,
 } from "@/config";
-import { ID, Query } from "node-appwrite";
+
+import { createWorkspaceSchema } from "../schemas";
 
 const app = new Hono()
   .get("/", sessionMiddleware, async (c) => {
@@ -75,6 +76,7 @@ const app = new Hono()
           name,
           userId: user.$id,
           imageUrl: uploadedImageUrl,
+          inviteCode: generateInviteCode(6),
         },
       );
 
