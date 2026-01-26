@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { ImageIcon } from "lucide-react";
 import { useRef } from "react";
@@ -11,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DottedSeparator } from "@/components/dotted-separator";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -20,15 +22,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { createWorkspaceSchema } from "../schemas";
-import { Button } from "@/components/ui/button";
+
 import { useCreateWorkspace } from "../api/use-create-workspace";
+import { createWorkspaceSchema } from "../schemas";
 
 interface CreateWorkspaceFormProps {
   onCancel?: () => void;
 }
 
 export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
+  const router = useRouter();
   const { mutate, isPending } = useCreateWorkspace();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -49,11 +52,11 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
     mutate(
       { form: finalValues },
       {
-        onSuccess: () => {
+        onSuccess: ({ data }) => {
           form.reset();
-          // TODO: Redirect to new workspace
+          router.push(`/workspaces/${data.$id}`);
         },
-      }
+      },
     );
   };
 
