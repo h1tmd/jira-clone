@@ -1,0 +1,32 @@
+import { redirect } from "next/navigation";
+
+import { EditWorkspaceForm } from "@/features/workspaces/components/edit-workspace-form";
+import { getWorkspace } from "@/features/workspaces/actions";
+import { getCurrent } from "@/features/auth/actions";
+
+interface WorkspaceSettingsIdPageProps {
+  params: {
+    workspaceId: string;
+  };
+}
+
+const WorkspaceSettingsIdPage = async ({
+  params,
+}: WorkspaceSettingsIdPageProps) => {
+  const user = await getCurrent();
+  if (!user) redirect("/sign-in");
+
+  const initialValues = await getWorkspace({ workspaceId: params.workspaceId });
+
+  if (!initialValues) {
+    redirect(`/workspaces/${params.workspaceId}`);
+  }
+
+  return (
+    <div className="w-full lg:max-w-xl">
+      <EditWorkspaceForm initialValues={initialValues} />
+    </div>
+  );
+};
+
+export default WorkspaceSettingsIdPage;
