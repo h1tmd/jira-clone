@@ -6,7 +6,7 @@ import { sessionMiddleware } from "@/lib/session-middleware";
 import { getMember } from "@/features/members/utils";
 import { DATABASE_ID, IMAGES_BUCKET_ID, PROJECTS_ID } from "@/config";
 import { zValidator } from "@hono/zod-validator";
-import { createProjectSchema } from "../schema";
+import { createProjectSchema } from "../schemas";
 
 const app = new Hono()
   .post(
@@ -18,7 +18,17 @@ const app = new Hono()
       const storage = c.get("storage");
       const user = c.get("user");
 
-      const { name, image } = c.req.valid("form");
+      const { name, image, workspaceId } = c.req.valid("form");
+
+      const member = await getMember({
+        databases,
+        workspaceId,
+        userId: user.$id,
+      });
+
+      if (!member) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
 
       let uploadedImageUrl: string | undefined;
 
@@ -45,13 +55,14 @@ const app = new Hono()
         ID.unique(),
         {
           name,
-          userId: user.$id,
           imageUrl: uploadedImageUrl,
           workspaceId,
         },
       );
 
-      return c.json({ data: workspace });
+      console.log("new project", JSON.stringify(project));
+
+      return c.json({ data: project });
     },
   )
   .get(
