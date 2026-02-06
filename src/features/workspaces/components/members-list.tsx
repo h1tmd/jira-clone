@@ -61,7 +61,7 @@ const MembersList = () => {
     <Card className="w-full h-full border-none shadow-none">
       <ConfirmDialog />
       <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
-        <Button variant={"secondary"} size={"sm"}>
+        <Button asChild variant={"secondary"} size={"sm"}>
           <Link href={`/workspaces/${workspaceId}`}>
             <ArrowLeftIcon className="size-4 mr-2" />
             Back
