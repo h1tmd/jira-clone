@@ -83,8 +83,6 @@ const app = new Hono()
         },
       );
 
-      console.log({ userId: user.$id, workspaceId: workspace.$id });
-
       await databases.createDocument(DATABASE_ID, MEMBERS_ID, ID.unique(), {
         userId: user.$id,
         workspaceId: workspace.$id,
