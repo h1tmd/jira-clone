@@ -25,12 +25,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+import { useResetInviteCode } from "../api/use-reset-invite-code";
 import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { useDeleteWorkspace } from "../api/use-delete-workspace";
 import { updateWorkspaceSchema } from "../schemas";
 import { Workspace } from "../types";
 import { toast } from "sonner";
-import { useResetInviteCode } from "../api/use-reset-invite-code";
 
 interface EditWorkspaceFormProps {
   onCancel?: () => void;
@@ -105,9 +105,8 @@ export const EditWorkspaceForm = ({
     mutate(
       { form: finalValues, param: { workspaceId: initialValues.$id } },
       {
-        onSuccess: ({ data }) => {
+        onSuccess: () => {
           form.reset();
-          router.push(`/workspaces/${data.$id}`);
         },
       },
     );
