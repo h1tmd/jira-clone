@@ -1,6 +1,6 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
+import { Loader, PlusIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -50,17 +50,23 @@ export const TaskViewSwitcher = () => {
         {/* Add filters */}
         Data filters
         <DottedSeparator className="my-4" />
-        <>
-          <TabsContent value="table" className="mt-0">
-            {JSON.stringify(tasks)}
-          </TabsContent>
-          <TabsContent value="kanban" className="mt-0">
-            {JSON.stringify(tasks)}
-          </TabsContent>
-          <TabsContent value="calendar" className="mt-0">
-            {JSON.stringify(tasks)}
-          </TabsContent>
-        </>
+        {isLoadingTasks ? (
+          <div className="w-full border rounded-lg h-[200px] flex flex-col items-center justify-center">
+            <Loader className="size-5 animate-spin text-muted-foreground" />
+          </div>
+        ) : (
+          <>
+            <TabsContent value="table" className="mt-0">
+              {JSON.stringify(tasks)}
+            </TabsContent>
+            <TabsContent value="kanban" className="mt-0">
+              {JSON.stringify(tasks)}
+            </TabsContent>
+            <TabsContent value="calendar" className="mt-0">
+              {JSON.stringify(tasks)}
+            </TabsContent>
+          </>
+        )}
       </div>
     </Tabs>
   );
