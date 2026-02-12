@@ -47,7 +47,7 @@ export const TaskViewSwitcher = () => {
               Kanban
             </TabsTrigger>
             <TabsTrigger className="h-8 w-full lg:w-auto" value="calendar">
-              Calendartask
+              Calendar
             </TabsTrigger>
           </TabsList>
           <Button onClick={open} size="sm" className="w-full lg:w-auto">
