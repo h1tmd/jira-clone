@@ -1,4 +1,4 @@
-import { ListChecksIcon } from "lucide-react";
+import { ListChecksIcon, UserIcon } from "lucide-react";
 
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
@@ -48,11 +48,13 @@ export const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
   if (isLoading) return null;
 
   const onStatusChange = (value: string) => {
-    if (value === "all") {
-      setFilters({ status: null });
-    } else {
-      setFilters({ status: value as TaskStatus });
-    }
+    setFilters({ status: value === "all" ? null : (value as TaskStatus) });
+  };
+  const onAssigneeChange = (value: string) => {
+    setFilters({ assigneeId: value === "all" ? null : (value as string) });
+  };
+  const onProjectChange = (value: string) => {
+    setFilters({ projectId: value === "all" ? null : (value as TaskStatus) });
   };
 
   return (
@@ -75,6 +77,26 @@ export const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
           <SelectItem value={TaskStatus.IN_PROGRESS}>In Progress</SelectItem>
           <SelectItem value={TaskStatus.IN_REVIEW}>In Review</SelectItem>
           <SelectItem value={TaskStatus.DONE}>Done</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select
+        defaultValue={assigneeId ?? undefined}
+        onValueChange={(value) => onAssigneeChange(value)}
+      >
+        <SelectTrigger className="w-full lg:w-auto h-8">
+          <div className="flex items-center pr-2">
+            <UserIcon className="size-4 mr-2" />
+            <SelectValue placeholder="All assignees" />
+          </div>
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All assignees</SelectItem>
+          <SelectSeparator />
+          {memberOptions?.map((member) => (
+            <SelectItem key={member.id} value={member.id}>
+              {member.name}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>
