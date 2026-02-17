@@ -3,12 +3,13 @@ import {
   DragDropContext,
   Droppable,
   Draggable,
-  DropResult,
+  type DropResult,
 } from "@hello-pangea/dnd";
 
 import { KanbanColumnHeader } from "./kanban-column-header";
 import { Task, TaskStatus } from "../types";
 import { KanbanCard } from "./kanban-card";
+import { on } from "events";
 
 const boards: TaskStatus[] = [
   TaskStatus.BACKLOG,
@@ -24,9 +25,12 @@ type TasksState = {
 
 interface DataKanbanProps {
   data: Task[];
+  onChange: (
+    tasks: { $id: string; status: TaskStatus; position: number }[],
+  ) => void;
 }
 
-export const DataKanban = ({ data }: DataKanbanProps) => {
+export const DataKanban = ({ data, onChange }: DataKanbanProps) => {
   const [tasks, setTasks] = useState<TasksState>(() => {
     const initialTasks: TasksState = {
       [TaskStatus.BACKLOG]: [],
@@ -48,8 +52,95 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
     return initialTasks;
   });
 
+  const onDragEnd = useCallback(
+    (result: DropResult) => {
+      if (!result.destination) return;
+
+      const { source, destination } = result;
+      const sourceStatus = source.droppableId as TaskStatus;
+      const destStatus = destination.droppableId as TaskStatus;
+
+      let updatesPayload: {
+        $id: string;
+        status: TaskStatus;
+        position: number;
+      }[] = [];
+
+      setTasks((prevTasks) => {
+        const newTasks = { ...prevTasks };
+
+        // Safely remove the task from the source column
+        const sourceColumn = [...newTasks[sourceStatus]];
+        const [movedTask] = sourceColumn.splice(source.index, 1);
+
+        // If no moved task, return to previous state
+        if (!movedTask) {
+          console.error("No task found at the source index");
+          return prevTasks;
+        }
+
+        // New updated task object
+        const updatedMovedTask =
+          sourceStatus !== destStatus
+            ? { ...movedTask, status: destStatus }
+            : movedTask;
+
+        // Update source column
+        newTasks[sourceStatus] = sourceColumn;
+
+        // Add moved task to destination column
+        const destColumn = [...newTasks[destStatus]];
+        destColumn.splice(destination.index, 0, updatedMovedTask);
+        newTasks[destStatus] = destColumn;
+
+        // Update moved task
+        updatesPayload = [];
+        updatesPayload.push({
+          $id: updatedMovedTask.$id,
+          status: destStatus,
+          position: Math.min((destination.index + 1) * 1000, 1_000_000),
+        });
+
+        // Update destination column positions
+        newTasks[destStatus].forEach((task, index) => {
+          if (task && task.$id !== updatedMovedTask.$id) {
+            const newPosition = Math.min((index + 1) * 1000, 1_000_000);
+            if (task.position !== newPosition) {
+              updatesPayload.push({
+                $id: task.$id,
+                status: destStatus,
+                position: newPosition,
+              });
+            }
+          }
+        });
+
+        // Update source column positions
+        if (sourceStatus !== destStatus) {
+          newTasks[sourceStatus].forEach((task, index) => {
+            if (task) {
+              const newPosition = Math.min((index + 1) * 1000, 1_000_000);
+              if (task.position !== newPosition) {
+                updatesPayload.push({
+                  $id: task.$id,
+                  status: sourceStatus,
+                  position: newPosition,
+                });
+              }
+            }
+          });
+        }
+
+        return newTasks;
+      });
+
+      onChange(updatesPayload);
+    },
+    [onChange],
+  );
+
   return (
-    <DragDropContext onDragEnd={() => {}}>
+    <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex overflow-x-auto">
         {boards.map((board) => {
           return (
@@ -86,6 +177,7 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
                         )}
                       </Draggable>
                     ))}
+                    {provided.placeholder}
                   </div>
                 )}
               </Droppable>
