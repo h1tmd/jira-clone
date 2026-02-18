@@ -28,14 +28,14 @@ export const KanbanCard = ({ task }: KanbanCardProps) => {
         />
         <div className="size-1 rounded-full bg-neutral-300" />
         <TaskDate value={task.dueDate} className="text-xs" />
-        <div className="flex items-center gap-x-1.5">
-          <ProjectAvatar
-            name={task.project.name}
-            image={task.project.imageUrl}
-            fallbackClassName="text=[10px]"
-          />
-          <span className="text-xs font-medium">{task.project.name}</span>
-        </div>
+      </div>
+      <div className="flex items-center gap-x-1.5">
+        <ProjectAvatar
+          name={task.project.name}
+          image={task.project.imageUrl}
+          fallbackClassName="text=[10px]"
+        />
+        <span className="text-xs font-medium">{task.project.name}</span>
       </div>
     </div>
   );
