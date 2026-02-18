@@ -29,19 +29,46 @@ export const TaskDescription = ({ task }: TaskDescriptionProps) => {
     <div className="p-4 border rounded-lg">
       <div className="flex items-center justify-between">
         <p className="text-lg font-semibold">Overview</p>
-        <Button size={"sm"} variant={"secondary"}>
-          <PencilIcon className="size-4 mr-2" />
-          Edit
+        <Button
+          onClick={() => setIsEditing((prev) => !prev)}
+          size={"sm"}
+          variant={"secondary"}
+        >
+          {isEditing ? (
+            <XIcon className="size-4 mr-2" />
+          ) : (
+            <PencilIcon className="size-4 mr-2" />
+          )}
+          {isEditing ? "Cancel" : "Edit"}
         </Button>
       </div>
       <DottedSeparator className="my-4" />
-      <div className="flex flex-col gap-y-4">
+      {isEditing ? (
+        <div className="flex flex-col gap-y-4">
+          <Textarea
+            placeholder="Add a description..."
+            value={value}
+            rows={4}
+            onChange={(e) => setValue(e.target.value)}
+            disabled={isPending}
+          />
+
+          <Button
+            size="sm"
+            className="w-fit ml-auto"
+            onClick={handleSave}
+            disabled={isPending}
+          >
+            {isPending ? "Saving..." : "Save Changes"}
+          </Button>
+        </div>
+      ) : (
         <div>
           {task.description || (
             <span className="text-muted-foreground">No description set</span>
           )}
         </div>
-      </div>
+      )}
     </div>
   );
 };
