@@ -11,7 +11,7 @@ import { PageLoader } from "@/components/page-loader";
 import { PageError } from "@/components/page-error";
 import { Button } from "@/components/ui/button";
 
-export const ProjectIdClient = async () => {
+export const ProjectIdClient = () => {
   const projectId = useProjectId();
   const { data, isLoading } = useGetProject({ projectId });
 
