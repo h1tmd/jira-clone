@@ -1,10 +1,9 @@
 "use client";
 
-import { ArrowLeftIcon, CopyIcon, ImageIcon } from "lucide-react";
+import { ArrowLeftIcon, ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useRef } from "react";
-import { toast } from "sonner";
 import Image from "next/image";
 import { z } from "zod";
 
@@ -246,7 +245,7 @@ export const EditProjectForm = ({
               size={"sm"}
               variant="destructive"
               type="button"
-              disabled={isPending}
+              disabled={isPending || isDeletingProject}
               onClick={handleDelete}
             >
               Delete Project
