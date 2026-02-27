@@ -1,4 +1,9 @@
-import { ExternalLinkIcon, PencilIcon, TrashIcon } from "lucide-react";
+import {
+  ExternalLinkIcon,
+  PencilIcon,
+  TimerIcon,
+  TrashIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
@@ -47,6 +52,10 @@ export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
     router.push(`/workspaces/${workspaceId}/projects/${projectId}`);
   };
 
+  const onOpenTime = () => {
+    router.push(`/workspaces/${workspaceId}/time-tracking/${id}`);
+  };
+
   return (
     <div className="flex justify-end">
       <ConfirmDialog />
@@ -67,6 +76,14 @@ export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
           >
             <ExternalLinkIcon className="size-4 mr-2 stroke-2" />
             Open Project
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={onOpenTime}
+            className="font-medium p-[10px]"
+          >
+            <TimerIcon className="size-4 mr-2 stroke-2" />
+            Start Tracking
           </DropdownMenuItem>
 
           <DropdownMenuItem
