@@ -4,7 +4,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { ID, Query } from "node-appwrite";
 import z from "zod";
-import { createTimeSchema } from "../schemas";
+import { addTimeSchema } from "../schemas";
 import { getMember } from "@/features/members/utils";
 
 const app = new Hono()
@@ -12,13 +12,13 @@ const app = new Hono()
   .post(
     "/",
     sessionMiddleware,
-    zValidator("form", createTimeSchema),
+    zValidator("json", addTimeSchema),
     async (c) => {
       const user = c.get("user");
       const databases = c.get("databases");
 
       const { taskId, secondsTracked, dayTracked, workspaceId } =
-        c.req.valid("form");
+        c.req.valid("json");
 
       const member = await getMember({
         databases,
