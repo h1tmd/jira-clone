@@ -1,13 +1,16 @@
 "use client";
 
-import React from "react";
+import { PauseIcon, PlayIcon, RotateCcwIcon } from "lucide-react";
 import { useTimer } from "react-timer-hook";
+import React from "react";
 
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { DottedSeparator } from "./dotted-separator";
 import { Button } from "./ui/button";
 
 export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
   const {
-    totalSeconds,
+    totalSeconds, // total seconds on the timer currently
     milliseconds,
     seconds,
     minutes,
@@ -28,25 +31,42 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
     // Restarts to 5 minutes timer
     const time = new Date();
     time.setSeconds(time.getSeconds() + 300);
-    restart(time);
+    restart(time, false);
   };
 
   return (
-    <div className="flex flex-col items-center gap-y-4">
-      <h1>Test Timer using react-timer-hook</h1>
-      <div className="text-8xl flex justify-center font-mono">
-        <span>{hours.toString().padStart(2, "0")}</span>:
-        <span>{minutes.toString().padStart(2, "0")}</span>:
-        <span>{seconds.toString().padStart(2, "0")}</span>
-      </div>
-      {/* <p>{isRunning ? "Running" : "Not running"}</p> */}
-      <div className="flex justify-center gap-x-3">
-        <Button onClick={start}>Start</Button>
-        <Button onClick={pause}>Pause</Button>
-        <Button onClick={resume}>Resume</Button>
-        <Button onClick={onRestart}>Restart</Button>
-      </div>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl">
+          Test Timer using react-timer-hook
+        </CardTitle>
+      </CardHeader>
+      <DottedSeparator className="px-7" />
+      <CardContent className="my-2">
+        <div className="text-7xl flex justify-center font-mono py-7">
+          <span>{hours.toString().padStart(2, "0")}</span>:
+          <span>{minutes.toString().padStart(2, "0")}</span>:
+          <span>{seconds.toString().padStart(2, "0")}</span>
+        </div>
+
+        <div className="flex justify-center gap-x-3">
+          <Button
+            size={"lg"}
+            variant={"secondary"}
+            onClick={isRunning ? pause : resume}
+          >
+            {isRunning ? (
+              <PauseIcon className="text-muted-foreground size-16" />
+            ) : (
+              <PlayIcon />
+            )}
+          </Button>
+          <Button size={"lg"} variant={"secondary"} onClick={onRestart}>
+            <RotateCcwIcon />
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
