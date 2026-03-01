@@ -7,6 +7,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { DottedSeparator } from "./dotted-separator";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
   const {
@@ -41,6 +42,28 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
           Test Timer using react-timer-hook
         </CardTitle>
       </CardHeader>
+      <DottedSeparator className="px-7" />
+      <CardContent className="my-2 flex justify-center">
+        <div className="flex justify-center py-7 items-center w-fit gap-x-4">
+          <Input
+            value={hours}
+            type="number"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none size-16 !text-lg text-center"
+          />
+          :
+          <Input
+            value={minutes}
+            type="number"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none size-16 !text-lg text-center"
+          />
+          :
+          <Input
+            value={seconds}
+            type="number"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none size-16 !text-lg text-center"
+          />
+        </div>
+      </CardContent>
       <DottedSeparator className="px-7" />
       <CardContent className="my-2">
         <div className="text-7xl flex justify-center font-mono py-7">
