@@ -1,6 +1,13 @@
 "use client";
 
-import { PauseIcon, PlayIcon, RotateCcwIcon } from "lucide-react";
+import {
+  CheckIcon,
+  PauseIcon,
+  PencilIcon,
+  PlayIcon,
+  RotateCcwIcon,
+  XIcon,
+} from "lucide-react";
 import { useTimer } from "react-timer-hook";
 import React, { useState } from "react";
 
@@ -8,15 +15,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { DottedSeparator } from "./dotted-separator";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { FaCheck } from "react-icons/fa";
 
 export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [inputHours, setInputHours] = useState(0);
+  const [inputMinutes, setInputMinutes] = useState(0);
+  const [inputSeconds, setInputSeconds] = useState(0);
+
   const {
     totalSeconds, // total seconds on the timer currently
-    milliseconds,
     seconds,
     minutes,
     hours,
-    days, // add to hours
+    days,
     isRunning,
     start,
     pause,
@@ -25,12 +38,7 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
   } = useTimer({
     expiryTimestamp,
     onExpire: () => console.warn("onExpire called"),
-    interval: 20,
   });
-
-  const [inputHours, setInputHours] = useState(0);
-  const [inputMinutes, setInputMinutes] = useState(0);
-  const [inputSeconds, setInputSeconds] = useState(0);
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement, Element>) => {
     e.currentTarget.select();
@@ -52,7 +60,7 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
     setInputMinutes(numMinutes);
   };
 
-  const onSetTimer = () => {
+  const setTimer = () => {
     // Convert to seconds
     const timeSetInSeconds =
       inputHours * 3600 + inputMinutes * 60 + inputSeconds;
@@ -60,6 +68,14 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
     const time = new Date();
     time.setSeconds(time.getSeconds() + timeSetInSeconds);
     restart(time, false);
+  };
+
+  const handleEditTimer = () => {
+    if (isEditing) {
+      setTimer();
+    }
+
+    setIsEditing((prev) => !prev);
   };
 
   return (
@@ -70,76 +86,78 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
         </CardTitle>
       </CardHeader>
       <DottedSeparator className="px-7" />
-      <CardContent className="py-4 flex flex-col items-center justify-center">
-        <div className="flex justify-center pb-4 items-center w-fit gap-x-4">
-          <Input
-            value={inputHours.toString().padStart(2, "0")}
-            onChange={(e) => setInputHours(+e.target.value)}
-            disabled={isRunning}
-            onFocus={handleFocus}
-            type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none size-16 !text-lg text-center"
-          />
-          :
-          <Input
-            value={inputMinutes.toString().padStart(2, "0")}
-            onChange={(e) => setInputMinutes(+e.target.value)}
-            disabled={isRunning}
-            onFocus={handleFocus}
-            onBlur={handleMaxMinutes}
-            type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none size-16 !text-lg text-center"
-          />
-          :
-          <Input
-            value={inputSeconds.toString().padStart(2, "0")}
-            onChange={(e) => setInputSeconds(+e.target.value)}
-            disabled={isRunning}
-            onFocus={handleFocus}
-            onBlur={handleMaxSeconds}
-            type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none size-16 !text-lg text-center"
-          />
-        </div>
-        <Button variant={"secondary"} disabled={isRunning} onClick={onSetTimer}>
+      {/* <CardContent className="py-4 flex flex-col items-center justify-center">
+      
+        <Button variant={"secondary"} disabled={isRunning} onClick={setTimer}>
           Set
         </Button>
-      </CardContent>
+      </CardContent> */}
       <DottedSeparator className="px-7" />
       <CardContent className="my-2">
-        <div className="text-7xl flex justify-center font-mono py-7">
-          <span>{(days * 24 + hours).toString().padStart(2, "0")}</span>:
-          <span>{minutes.toString().padStart(2, "0")}</span>:
-          <span>{seconds.toString().padStart(2, "0")}</span>
-        </div>
-
+        {isEditing ? (
+          <div className="flex justify-center items-center py-7 font-mono w-full text-7xl">
+            <Input
+              value={inputHours.toString().padStart(2, "0")}
+              onChange={(e) => setInputHours(+e.target.value)}
+              disabled={isRunning}
+              onFocus={handleFocus}
+              type="number"
+              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-28 font-mono !text-7xl text-center"
+            />
+            :
+            <Input
+              value={inputMinutes.toString().padStart(2, "0")}
+              onChange={(e) => setInputMinutes(+e.target.value)}
+              disabled={isRunning}
+              onFocus={handleFocus}
+              onBlur={handleMaxMinutes}
+              type="number"
+              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-28 font-mono !text-7xl text-center"
+            />
+            :
+            <Input
+              value={inputSeconds.toString().padStart(2, "0")}
+              onChange={(e) => setInputSeconds(+e.target.value)}
+              disabled={isRunning}
+              onFocus={handleFocus}
+              onBlur={handleMaxSeconds}
+              type="number"
+              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-28 font-mono !text-7xl text-center"
+            />
+          </div>
+        ) : (
+          <div className="text-7xl flex justify-center font-mono py-8 gap-x-1">
+            <span>{(days * 24 + hours).toString().padStart(2, "0")}</span>:
+            <span>{minutes.toString().padStart(2, "0")}</span>:
+            <span>{seconds.toString().padStart(2, "0")}</span>
+          </div>
+        )}
         <div className="flex justify-center gap-x-3">
           <Button
             size={"lg"}
             variant={"secondary"}
+            disabled={isEditing}
+            onClick={setTimer}
+          >
+            <RotateCcwIcon />
+          </Button>
+          <Button
+            size={"lg"}
+            disabled={isEditing || totalSeconds == 0}
             onClick={isRunning ? pause : resume}
           >
-            {isRunning ? (
-              <PauseIcon className="text-muted-foreground size-16" />
-            ) : (
-              <PlayIcon />
-            )}
+            {isRunning ? <PauseIcon className="size-16" /> : <PlayIcon />}
           </Button>
-          <Button size={"lg"} variant={"secondary"} onClick={onSetTimer}>
-            <RotateCcwIcon />
+          <Button
+            onClick={handleEditTimer}
+            size={"lg"}
+            disabled={isRunning}
+            variant={"secondary"}
+          >
+            {isEditing ? <CheckIcon className="size-16" /> : <PencilIcon />}
           </Button>
         </div>
       </CardContent>
     </Card>
   );
 };
-
-// export default function App() {
-//    const time = new Date();
-//   time.setSeconds(time.getSeconds() + 600); // 10 minutes timer
-//   return (
-//     <div>
-//       <MyTimer expiryTimestamp={time} />
-//     </div>
-//   );
-// }
