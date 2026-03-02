@@ -1,21 +1,21 @@
 "use client";
 
+import { useTimer } from "react-timer-hook";
+import React, { useState } from "react";
 import {
   CheckIcon,
   PauseIcon,
   PencilIcon,
   PlayIcon,
   RotateCcwIcon,
-  XIcon,
 } from "lucide-react";
-import { useTimer } from "react-timer-hook";
-import React, { useState } from "react";
+
+import { useTimerExpiredModal } from "@/features/times/hooks/use-timer-expired-modal";
 
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { DottedSeparator } from "./dotted-separator";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { FaCheck } from "react-icons/fa";
 
 export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -23,6 +23,8 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
   const [inputHours, setInputHours] = useState(0);
   const [inputMinutes, setInputMinutes] = useState(0);
   const [inputSeconds, setInputSeconds] = useState(0);
+
+  const { open } = useTimerExpiredModal();
 
   const {
     totalSeconds, // total seconds on the timer currently
@@ -37,7 +39,7 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
     restart,
   } = useTimer({
     expiryTimestamp,
-    onExpire: () => console.warn("onExpire called"),
+    onExpire: open,
   });
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement, Element>) => {
