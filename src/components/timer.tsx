@@ -86,13 +86,6 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
         </CardTitle>
       </CardHeader>
       <DottedSeparator className="px-7" />
-      {/* <CardContent className="py-4 flex flex-col items-center justify-center">
-      
-        <Button variant={"secondary"} disabled={isRunning} onClick={setTimer}>
-          Set
-        </Button>
-      </CardContent> */}
-      <DottedSeparator className="px-7" />
       <CardContent className="my-2">
         {isEditing ? (
           <div className="flex justify-center items-center py-7 font-mono w-full text-7xl">
