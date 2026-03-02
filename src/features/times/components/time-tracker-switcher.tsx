@@ -1,10 +1,12 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useQueryState } from "nuqs";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DottedSeparator } from "@/components/dotted-separator";
+
+import { ManualTime } from "./manual-time";
 import { Timer } from "./timer";
-import { useQueryState } from "nuqs";
 
 export const TimeTrackerSwitcher = () => {
   const [trackMethod, setTrackMethod] = useQueryState("track-method", {
@@ -15,7 +17,7 @@ export const TimeTrackerSwitcher = () => {
     <Tabs
       defaultValue={trackMethod}
       onValueChange={setTrackMethod}
-      className="flex-1 border rounded-lg min-w-64"
+      className="flex-1 w-full border rounded-lg"
     >
       <div className="h-full flex flex-col overflow-auto p-7">
         <h1 className="text-xl font-bold">Time Tracker</h1>
@@ -35,7 +37,9 @@ export const TimeTrackerSwitcher = () => {
           <Timer defaultTimer={new Date()} />
         </TabsContent>
         <TabsContent value="stopwatch">Stopwatch</TabsContent>
-        <TabsContent value="manual">Manual Time Entry</TabsContent>
+        <TabsContent value="manual">
+          <ManualTime />
+        </TabsContent>
       </div>
     </Tabs>
   );
