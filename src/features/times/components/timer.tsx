@@ -10,12 +10,12 @@ import {
   RotateCcwIcon,
 } from "lucide-react";
 
-import { useTimerExpiredModal } from "@/features/times/hooks/use-timer-expired-modal";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DottedSeparator } from "@/components/dotted-separator";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { DottedSeparator } from "./dotted-separator";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { useTimerExpiredModal } from "../hooks/use-timer-expired-modal";
 
 export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
   const [isEditing, setIsEditing] = useState(false);
