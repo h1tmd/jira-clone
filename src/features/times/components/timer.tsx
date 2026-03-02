@@ -40,6 +40,7 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
   } = useTimer({
     expiryTimestamp,
     onExpire: open,
+    autoStart: false,
   });
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement, Element>) => {
