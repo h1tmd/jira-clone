@@ -88,7 +88,7 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
       <DottedSeparator className="px-7" />
       <CardContent className="my-2">
         {isEditing ? (
-          <div className="flex justify-center items-center py-7 font-mono w-full text-7xl">
+          <div className="flex justify-center items-center py-7 font-mono w-full text-7xl select-none">
             <Input
               value={inputHours.toString().padStart(2, "0")}
               onChange={(e) => setInputHours(+e.target.value)}
@@ -119,7 +119,7 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
             />
           </div>
         ) : (
-          <div className="text-7xl flex justify-center font-mono py-8 gap-x-1">
+          <div className="text-7xl flex justify-center font-mono py-8 gap-x-1 select-none">
             <span>{(days * 24 + hours).toString().padStart(2, "0")}</span>:
             <span>{minutes.toString().padStart(2, "0")}</span>:
             <span>{seconds.toString().padStart(2, "0")}</span>
