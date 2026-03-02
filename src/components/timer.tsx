@@ -102,7 +102,7 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
               disabled={isRunning}
               onFocus={handleFocus}
               type="number"
-              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-28 font-mono !text-7xl text-center"
+              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.5rem] px-0 font-mono !text-7xl text-center"
             />
             :
             <Input
@@ -112,7 +112,7 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
               onFocus={handleFocus}
               onBlur={handleMaxMinutes}
               type="number"
-              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-28 font-mono !text-7xl text-center"
+              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.5rem] px-0 font-mono !text-7xl text-center"
             />
             :
             <Input
@@ -122,7 +122,7 @@ export const Timer = ({ expiryTimestamp }: { expiryTimestamp: Date }) => {
               onFocus={handleFocus}
               onBlur={handleMaxSeconds}
               type="number"
-              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-28 font-mono !text-7xl text-center"
+              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.5rem] px-0 font-mono !text-7xl text-center"
             />
           </div>
         ) : (
