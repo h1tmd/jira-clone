@@ -89,7 +89,7 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
             disabled={isRunning}
             onFocus={handleFocus}
             type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.5rem] px-0 font-mono !text-7xl text-center"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.45rem] px-0 font-mono !text-7xl text-center"
           />
           :
           <Input
@@ -99,7 +99,7 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
             onFocus={handleFocus}
             onBlur={handleMaxMinutes}
             type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.5rem] px-0 font-mono !text-7xl text-center"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.45rem] px-0 font-mono !text-7xl text-center"
           />
           :
           <Input
@@ -109,11 +109,11 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
             onFocus={handleFocus}
             onBlur={handleMaxSeconds}
             type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.5rem] px-0 font-mono !text-7xl text-center"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.45rem] px-0 font-mono !text-7xl text-center"
           />
         </div>
       ) : (
-        <div className="text-7xl flex justify-center font-mono py-8 gap-x-1 select-none">
+        <div className="text-7xl flex justify-center font-mono py-8 gap-x-1 px-1 select-none">
           <span>{(days * 24 + hours).toString().padStart(2, "0")}</span>:
           <span>{minutes.toString().padStart(2, "0")}</span>:
           <span>{seconds.toString().padStart(2, "0")}</span>
