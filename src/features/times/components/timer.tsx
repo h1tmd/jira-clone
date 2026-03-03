@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { useTimerExpiredModal } from "../hooks/use-timer-expired-modal";
+import { DatePicker } from "@/components/date-picker";
 
 export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -21,6 +22,8 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
   const [inputHours, setInputHours] = useState(0);
   const [inputMinutes, setInputMinutes] = useState(0);
   const [inputSeconds, setInputSeconds] = useState(0);
+
+  const [inputDate, setInputDate] = useState(new Date());
 
   const { open } = useTimerExpiredModal();
 
@@ -80,7 +83,12 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
   };
 
   return (
-    <>
+    <div className="flex flex-col items-center">
+      <DatePicker
+        value={inputDate}
+        onChange={(date) => setInputDate(date)}
+        className="w-fit mt-7"
+      />
       {isEditing ? (
         <div className="flex justify-center items-center py-7 font-mono w-full text-7xl select-none">
           <Input
@@ -144,6 +152,6 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
           {isEditing ? <CheckIcon className="size-16" /> : <PencilIcon />}
         </Button>
       </div>
-    </>
+    </div>
   );
 };
