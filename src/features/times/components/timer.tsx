@@ -89,44 +89,51 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
         onChange={(date) => setInputDate(date)}
         className="w-fit mt-7"
       />
-      {isEditing ? (
-        <div className="flex justify-center items-center py-7 font-mono w-full text-7xl select-none">
-          <Input
-            value={inputHours.toString().padStart(2, "0")}
-            onChange={(e) => setInputHours(+e.target.value)}
-            disabled={isRunning}
-            onFocus={handleFocus}
-            type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center"
-          />
-          :
-          <Input
-            value={inputMinutes.toString().padStart(2, "0")}
-            onChange={(e) => setInputMinutes(+e.target.value)}
-            disabled={isRunning}
-            onFocus={handleFocus}
-            onBlur={handleMaxMinutes}
-            type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center"
-          />
-          :
-          <Input
-            value={inputSeconds.toString().padStart(2, "0")}
-            onChange={(e) => setInputSeconds(+e.target.value)}
-            disabled={isRunning}
-            onFocus={handleFocus}
-            onBlur={handleMaxSeconds}
-            type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center"
-          />
+      <div className="py-7">
+        {isEditing ? (
+          <div className="flex justify-center items-center font-mono w-full text-7xl select-none">
+            <Input
+              value={inputHours.toString().padStart(2, "0")}
+              onChange={(e) => setInputHours(+e.target.value)}
+              disabled={isRunning}
+              onFocus={handleFocus}
+              type="number"
+              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center"
+            />
+            :
+            <Input
+              value={inputMinutes.toString().padStart(2, "0")}
+              onChange={(e) => setInputMinutes(+e.target.value)}
+              disabled={isRunning}
+              onFocus={handleFocus}
+              onBlur={handleMaxMinutes}
+              type="number"
+              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center"
+            />
+            :
+            <Input
+              value={inputSeconds.toString().padStart(2, "0")}
+              onChange={(e) => setInputSeconds(+e.target.value)}
+              disabled={isRunning}
+              onFocus={handleFocus}
+              onBlur={handleMaxSeconds}
+              type="number"
+              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center"
+            />
+          </div>
+        ) : (
+          <div className="text-7xl flex justify-center font-mono gap-x-1 py-1 px-1 select-none">
+            <span>{(days * 24 + hours).toString().padStart(2, "0")}</span>:
+            <span>{minutes.toString().padStart(2, "0")}</span>:
+            <span>{seconds.toString().padStart(2, "0")}</span>
+          </div>
+        )}
+        <div className="flex text-center justify-center gap-x-2 px-1 select-none text-muted-foreground">
+          <span className="w-32">Hours</span>
+          <span className="w-32">Minutes</span>
+          <span className="w-32">Seconds</span>
         </div>
-      ) : (
-        <div className="text-7xl flex justify-center font-mono py-8 gap-x-1 px-1 select-none">
-          <span>{(days * 24 + hours).toString().padStart(2, "0")}</span>:
-          <span>{minutes.toString().padStart(2, "0")}</span>:
-          <span>{seconds.toString().padStart(2, "0")}</span>
-        </div>
-      )}
+      </div>
       <div className="flex justify-center gap-x-3">
         <Button
           size={"lg"}
