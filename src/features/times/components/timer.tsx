@@ -89,7 +89,7 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
             disabled={isRunning}
             onFocus={handleFocus}
             type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.45rem] px-0 font-mono !text-7xl text-center"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center"
           />
           :
           <Input
@@ -99,7 +99,7 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
             onFocus={handleFocus}
             onBlur={handleMaxMinutes}
             type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.45rem] px-0 font-mono !text-7xl text-center"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center"
           />
           :
           <Input
@@ -109,7 +109,7 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
             onFocus={handleFocus}
             onBlur={handleMaxSeconds}
             type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.45rem] px-0 font-mono !text-7xl text-center"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center"
           />
         </div>
       ) : (
