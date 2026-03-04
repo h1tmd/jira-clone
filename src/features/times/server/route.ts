@@ -1,11 +1,14 @@
-import { DATABASE_ID, TIMES_ID } from "@/config";
-import { sessionMiddleware } from "@/lib/session-middleware";
-import { zValidator } from "@hono/zod-validator";
-import { Hono } from "hono";
 import { ID, Query } from "node-appwrite";
+import { Hono } from "hono";
 import z from "zod";
-import { addTimeSchema } from "../schemas";
+
+import { sessionMiddleware } from "@/lib/session-middleware";
 import { getMember } from "@/features/members/utils";
+import { DATABASE_ID, TIMES_ID } from "@/config";
+import { zValidator } from "@hono/zod-validator";
+
+import { addTimeSchema } from "../schemas";
+import { TaskTime } from "../types";
 
 const app = new Hono()
   // Add new time
@@ -67,6 +70,30 @@ const app = new Hono()
 
       return c.json({ data: times });
     },
-  );
+  )
+  // Get all times in task
+  .get("/:taskId", sessionMiddleware, async (c) => {
+    const currentUser = c.get("user");
+    const databases = c.get("databases");
+    const { taskId } = c.req.param();
+
+    const times = await databases.listDocuments<TaskTime>(
+      DATABASE_ID,
+      TIMES_ID,
+      [Query.equal("taskId", taskId)],
+    );
+
+    const currentMember = await getMember({
+      databases,
+      workspaceId: times.documents[0].workspaceId,
+      userId: currentUser.$id,
+    });
+
+    if (!currentMember) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    return c.json({ data: times });
+  });
 
 export default app;
