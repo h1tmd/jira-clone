@@ -6,14 +6,28 @@ import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { Project } from "@/features/projects/types";
 import { Button } from "@/components/ui/button";
 import { Task } from "@/features/tasks/types";
+import { useGetProject } from "@/features/projects/api/use-get-project";
+import { PageLoader } from "@/components/page-loader";
+import { PageError } from "@/components/page-error";
 
-interface TaskBreadcrumbsProps {
-  project: Project;
+interface TimeBreadcrumbsProps {
   task: Task;
 }
 
-export const TimeBreadcrumbs = ({ project, task }: TaskBreadcrumbsProps) => {
+export const TimeBreadcrumbs = ({ task }: TimeBreadcrumbsProps) => {
   const workspaceId = useWorkspaceId();
+
+  const { data: project, isLoading: isLoadingProject } = useGetProject({
+    projectId: task.projectId,
+  });
+
+  if (isLoadingProject) {
+    return <PageLoader />;
+  }
+
+  if (!project) {
+    return <PageError message="Project not found" />;
+  }
 
   return (
     <div className="flex items-center gap-x-2">
