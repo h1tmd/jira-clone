@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DottedSeparator } from "@/components/dotted-separator";
 
 import { ManualTime } from "./manual-time";
+import { Stopwatch } from "./stopwatch";
 import { Timer } from "./timer";
 
 export const TimeTrackerSwitcher = () => {
@@ -36,7 +37,9 @@ export const TimeTrackerSwitcher = () => {
         <TabsContent value="timer">
           <Timer defaultTimer={new Date()} />
         </TabsContent>
-        <TabsContent value="stopwatch">Stopwatch</TabsContent>
+        <TabsContent value="stopwatch">
+          <Stopwatch />
+        </TabsContent>
         <TabsContent value="manual">
           <ManualTime />
         </TabsContent>
