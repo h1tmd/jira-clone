@@ -1,3 +1,5 @@
+"use client";
+
 import { ChevronRightIcon, ShuffleIcon } from "lucide-react";
 import Link from "next/link";
 
