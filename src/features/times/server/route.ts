@@ -80,7 +80,7 @@ const app = new Hono()
     const times = await databases.listDocuments<TaskTime>(
       DATABASE_ID,
       TIMES_ID,
-      [Query.equal("taskId", taskId)],
+      [Query.equal("taskId", taskId), Query.orderDesc("dayTracked")],
     );
 
     const currentMember = await getMember({
