@@ -1,16 +1,18 @@
 "use client";
 
-import { DottedSeparator } from "@/components/dotted-separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useGetTaskTimes } from "../api/use-get-task-times";
+import { DottedSeparator } from "@/components/dotted-separator";
 import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 import { PageError } from "@/components/page-error";
+
+import { useGetTaskTimes } from "../api/use-get-task-times";
+import { TaskTime } from "../types";
 
 export const TaskTimeDetails = () => {
   const taskId = useTaskId();
   const { data: taskTimes } = useGetTaskTimes({ taskId });
 
-  if (!taskTimes) {
+  if (taskTimes === undefined) {
     return <PageError message="Task not found" />;
   }
 
@@ -44,12 +46,24 @@ export const TaskTimeDetails = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl font-bold">Task History</CardTitle>
+        <CardTitle className="text-xl font-bold">
+          Tracked Time Details
+        </CardTitle>
       </CardHeader>
       <DottedSeparator className="px-7" />
       <CardContent className="mt-7">
+        <p className="text-lg font-bold">Overall Total Time</p>
+        <p className="text-lg font-semibold text-muted-foreground">
+          {secondsToString(
+            taskTimes.reduce((n, { secondsTracked }) => n + secondsTracked, 0),
+          )}
+        </p>
+      </CardContent>
+      <DottedSeparator className="px-7" />
+      <CardContent className="mt-7">
+        <p className="text-lg font-bold mb-4">Session History</p>
         <ul className="flex flex-col gap-y-4">
-          {taskTimes.documents.map((taskTime) => (
+          {taskTimes.map((taskTime) => (
             <li key={taskTime.$id}>
               <Card className="shadow-none rounded-lg hover:opacity-75 transition">
                 <CardContent className="p-4">
