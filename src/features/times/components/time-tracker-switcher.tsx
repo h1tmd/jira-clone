@@ -1,6 +1,6 @@
 "use client";
 
-import { useQueryState } from "nuqs";
+import { parseAsString, useQueryState } from "nuqs";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DottedSeparator } from "@/components/dotted-separator";
@@ -10,9 +10,12 @@ import { Stopwatch } from "./stopwatch";
 import { Timer } from "./timer";
 
 export const TimeTrackerSwitcher = () => {
-  const [trackMethod, setTrackMethod] = useQueryState("track-method", {
-    defaultValue: "timer",
-  });
+  const [trackMethod, setTrackMethod] = useQueryState(
+    "track-method",
+    parseAsString
+      .withOptions({ clearOnDefault: true })
+      .withDefault("stopwatch"),
+  );
 
   return (
     <Tabs
