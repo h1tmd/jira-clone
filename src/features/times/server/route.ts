@@ -93,7 +93,7 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    return c.json({ data: times });
+    return c.json({ data: times.documents });
   });
 
 export default app;
