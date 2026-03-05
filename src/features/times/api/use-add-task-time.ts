@@ -23,7 +23,7 @@ export const useAddTaskTime = () => {
     onSuccess: ({ data }) => {
       toast.success("Task time added");
 
-      queryClient.invalidateQueries({ queryKey: ["task-times", data.$id] });
+      queryClient.invalidateQueries({ queryKey: ["task-times", data.taskId] });
     },
     onError: () => {
       toast.error("Failed to add time");
