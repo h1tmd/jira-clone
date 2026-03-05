@@ -4,11 +4,12 @@ import z from "zod";
 
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { getMember } from "@/features/members/utils";
-import { DATABASE_ID, TIMES_ID } from "@/config";
+import { DATABASE_ID, TASKS_ID, TIMES_ID } from "@/config";
 import { zValidator } from "@hono/zod-validator";
 
 import { addTimeSchema } from "../schemas";
 import { TaskTime } from "../types";
+import { Task } from "@/features/tasks/types";
 
 const app = new Hono()
   // Add new time
@@ -77,21 +78,27 @@ const app = new Hono()
     const databases = c.get("databases");
     const { taskId } = c.req.param();
 
-    const times = await databases.listDocuments<TaskTime>(
+    const task = await databases.getDocument<Task>(
       DATABASE_ID,
-      TIMES_ID,
-      [Query.equal("taskId", taskId), Query.orderDesc("dayTracked")],
+      TASKS_ID,
+      taskId,
     );
 
     const currentMember = await getMember({
       databases,
-      workspaceId: times.documents[0].workspaceId,
+      workspaceId: task.workspaceId,
       userId: currentUser.$id,
     });
 
     if (!currentMember) {
       return c.json({ error: "Unauthorized" }, 401);
     }
+
+    const times = await databases.listDocuments<TaskTime>(
+      DATABASE_ID,
+      TIMES_ID,
+      [Query.equal("taskId", taskId), Query.orderDesc("dayTracked")],
+    );
 
     return c.json({ data: times.documents });
   });
