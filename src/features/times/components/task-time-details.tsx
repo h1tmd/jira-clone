@@ -6,7 +6,6 @@ import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 import { PageError } from "@/components/page-error";
 
 import { useGetTaskTimes } from "../api/use-get-task-times";
-import { TaskTime } from "../types";
 
 export const TaskTimeDetails = () => {
   const taskId = useTaskId();
@@ -51,35 +50,45 @@ export const TaskTimeDetails = () => {
         </CardTitle>
       </CardHeader>
       <DottedSeparator className="px-7" />
-      <CardContent className="mt-7">
-        <p className="text-lg font-bold">Overall Total Time</p>
-        <p className="text-lg font-semibold text-muted-foreground">
-          {secondsToString(
-            taskTimes.reduce((n, { secondsTracked }) => n + secondsTracked, 0),
-          )}
-        </p>
-      </CardContent>
-      <DottedSeparator className="px-7" />
-      <CardContent className="mt-7">
-        <p className="text-lg font-bold mb-4">Session History</p>
-        <ul className="flex flex-col gap-y-4">
-          {taskTimes.map((taskTime) => (
-            <li key={taskTime.$id}>
-              <Card className="shadow-none rounded-lg hover:opacity-75 transition">
-                <CardContent className="p-4">
-                  <p className="text-lg font-medium truncate">
-                    {dateToString(new Date(taskTime.dayTracked))}
-                  </p>
-                  <p>Total Time: {secondsToString(taskTime.secondsTracked)}</p>
-                </CardContent>
-              </Card>
-            </li>
-          ))}
-          <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
-            No tracking history
-          </li>
-        </ul>
-      </CardContent>
+      {taskTimes.length !== 0 ? (
+        <>
+          <CardContent className="mt-7">
+            <p className="text-lg font-bold">Overall Total Time</p>
+            <p className="text-lg font-semibold text-muted-foreground">
+              {secondsToString(
+                taskTimes.reduce(
+                  (n, { secondsTracked }) => n + secondsTracked,
+                  0,
+                ),
+              )}
+            </p>
+          </CardContent>
+          <DottedSeparator className="px-7" />
+          <CardContent className="mt-7">
+            <p className="text-lg font-bold mb-4">Session History</p>
+            <ul className="flex flex-col gap-y-4">
+              {taskTimes.map((taskTime) => (
+                <li key={taskTime.$id}>
+                  <Card className="shadow-none rounded-lg hover:opacity-75 transition">
+                    <CardContent className="p-4">
+                      <p className="text-lg font-medium truncate">
+                        {dateToString(new Date(taskTime.dayTracked))}
+                      </p>
+                      <p>
+                        Total Time: {secondsToString(taskTime.secondsTracked)}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </>
+      ) : (
+        <CardContent className="flex items-center justify-center p-7 text-center text-lg font-semibold text-muted-foreground">
+          No tracking history. Start your first session using the time tracker.
+        </CardContent>
+      )}
     </Card>
   );
 };
