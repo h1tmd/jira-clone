@@ -1,3 +1,5 @@
+"use client";
+
 import { DottedSeparator } from "@/components/dotted-separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGetTaskTimes } from "../api/use-get-task-times";
@@ -11,6 +13,19 @@ export const TaskTimeDetails = () => {
   if (!taskTimes) {
     return <PageError message="Task not found" />;
   }
+
+  const dateToString = (date: Date) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      weekday: "short",
+    };
+    const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
+      date,
+    );
+    return formattedDate;
+  };
 
   const secondsToString = (totalSeconds: number) => {
     const hours = Math.floor(totalSeconds / 3600);
@@ -39,7 +54,7 @@ export const TaskTimeDetails = () => {
               <Card className="shadow-none rounded-lg hover:opacity-75 transition">
                 <CardContent className="p-4">
                   <p className="text-lg font-medium truncate">
-                    {new Date(taskTime.dayTracked).toDateString()}
+                    {dateToString(new Date(taskTime.dayTracked))}
                   </p>
                   <p>Total Time: {secondsToString(taskTime.secondsTracked)}</p>
                 </CardContent>
