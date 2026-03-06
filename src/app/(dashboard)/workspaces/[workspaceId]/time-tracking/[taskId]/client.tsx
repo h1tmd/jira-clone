@@ -4,6 +4,7 @@ import { TimeTrackerSwitcher } from "@/features/times/components/time-tracker-sw
 import { TaskTimeDetails } from "@/features/times/components/task-time-details";
 import { TimeBreadcrumbs } from "@/features/times/components/time-breadcrumbs";
 import { useGetTaskTimes } from "@/features/times/api/use-get-task-times";
+import { DottedSeparator } from "@/components/dotted-separator";
 import { useGetTask } from "@/features/tasks/api/use-get-task";
 import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 import { PageLoader } from "@/components/page-loader";
@@ -25,8 +26,10 @@ export const TimeTaskIdClient = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-6">
       <TimeBreadcrumbs task={task} project={task.project} />
+
+      <DottedSeparator />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <TimeTrackerSwitcher />
