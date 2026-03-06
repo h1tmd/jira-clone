@@ -46,7 +46,7 @@ export const TaskTimeDetails = ({ taskTimes }: TaskTimeDetailsProps) => {
   };
 
   return (
-    <Card>
+    <Card className="shadow-none">
       <CardHeader>
         <CardTitle className="text-xl font-bold">
           Tracked Time Details
@@ -55,16 +55,16 @@ export const TaskTimeDetails = ({ taskTimes }: TaskTimeDetailsProps) => {
       <DottedSeparator className="px-7" />
       {taskTimes.length !== 0 ? (
         <>
-          <CardContent className="mt-7">
+          <CardContent className="mt-6">
             <p className="text-lg font-bold">Overall Total Time</p>
             <p className="text-lg font-semibold text-muted-foreground">
               {getTotalTime(taskTimes)}
             </p>
           </CardContent>
           <DottedSeparator className="px-7" />
-          <CardContent className="mt-7">
-            <p className="text-lg font-bold mb-4">Session History</p>
-            <ul className="flex flex-col gap-y-4">
+          <CardContent className="mt-6">
+            <p className="text-lg font-bold mb-2">Session History</p>
+            <ul className="flex flex-col gap-y-2">
               {taskTimes.map((taskTime) => (
                 <li key={taskTime.$id}>
                   <Card className="shadow-none rounded-lg hover:opacity-75 transition">
