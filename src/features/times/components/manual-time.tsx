@@ -1,14 +1,28 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
+import z from "zod";
+
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { useTaskId } from "@/features/tasks/hooks/use-task-id";
+import { DatePicker } from "@/components/date-picker";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+import { useAddTaskTime } from "../api/use-add-task-time";
+import { addTimeSchema } from "../schemas";
 
 export const ManualTime = () => {
+  const { mutate, isPending } = useAddTaskTime();
+  const taskId = useTaskId();
+  const workspaceId = useWorkspaceId();
+
   const [inputHours, setInputHours] = useState(0);
   const [inputMinutes, setInputMinutes] = useState(0);
   const [inputSeconds, setInputSeconds] = useState(0);
+
+  const [inputDate, setInputDate] = useState(new Date());
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement, Element>) => {
     e.currentTarget.select();
@@ -34,47 +48,78 @@ export const ManualTime = () => {
     return inputHours * 3600 + inputMinutes * 60 + inputSeconds;
   };
 
+  const handleAddTime = () => {
+    const values: z.infer<typeof addTimeSchema> = {
+      secondsTracked: convertToSeconds(),
+      dayTracked: inputDate,
+      taskId,
+      workspaceId,
+    };
+    mutate(
+      { json: { ...values } },
+      {
+        onSuccess: () => {
+          setInputHours(0);
+          setInputMinutes(0);
+          setInputSeconds(0);
+          setInputDate(new Date());
+        },
+      },
+    );
+  };
+
   return (
-    <>
-      <div className="flex justify-center items-center py-7 font-mono w-full text-7xl select-none">
-        <Input
-          value={inputHours.toString().padStart(2, "0")}
-          onChange={(e) => setInputHours(+e.target.value)}
-          onFocus={handleFocus}
-          type="number"
-          className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.45rem] px-0 font-mono !text-7xl text-center"
-        />
-        :
-        <Input
-          value={inputMinutes.toString().padStart(2, "0")}
-          onChange={(e) => setInputMinutes(+e.target.value)}
-          onFocus={handleFocus}
-          onBlur={handleMaxMinutes}
-          type="number"
-          className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.45rem] px-0 font-mono !text-7xl text-center"
-        />
-        :
-        <Input
-          value={inputSeconds.toString().padStart(2, "0")}
-          onChange={(e) => setInputSeconds(+e.target.value)}
-          onFocus={handleFocus}
-          onBlur={handleMaxSeconds}
-          onSubmit={handleMaxSeconds}
-          type="number"
-          className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.45rem] px-0 font-mono !text-7xl text-center"
-        />
+    <div className="flex flex-col items-center">
+      <DatePicker
+        value={inputDate}
+        onChange={(date) => setInputDate(date)}
+        className="w-fit mt-7"
+      />
+      <div className="py-7">
+        <div className="flex justify-center items-center font-mono w-full text-7xl select-none">
+          <Input
+            value={inputHours.toString().padStart(2, "0")}
+            onChange={(e) => setInputHours(+e.target.value)}
+            onFocus={handleFocus}
+            type="number"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center shadow-none bg-muted"
+          />
+          :
+          <Input
+            value={inputMinutes.toString().padStart(2, "0")}
+            onChange={(e) => setInputMinutes(+e.target.value)}
+            onFocus={handleFocus}
+            onBlur={handleMaxMinutes}
+            type="number"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center shadow-none bg-muted"
+          />
+          :
+          <Input
+            value={inputSeconds.toString().padStart(2, "0")}
+            onChange={(e) => setInputSeconds(+e.target.value)}
+            onFocus={handleFocus}
+            onBlur={handleMaxSeconds}
+            onSubmit={handleMaxSeconds}
+            type="number"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center shadow-none bg-muted"
+          />
+        </div>
+        <div className="flex text-center justify-center gap-x-2 px-1 select-none text-muted-foreground">
+          <span className="w-32">Hours</span>
+          <span className="w-32">Minutes</span>
+          <span className="w-32">Seconds</span>
+        </div>
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center gap-x-3">
         <Button
-          // onClick={handleEditTimer}
-          disabled={convertToSeconds() == 0}
+          onClick={handleAddTime}
+          disabled={convertToSeconds() == 0 || isPending}
           size={"lg"}
-          variant={"secondary"}
         >
           <PlusIcon className="size-16 mr-2" />
           Add to task
         </Button>
       </div>
-    </>
+    </div>
   );
 };
