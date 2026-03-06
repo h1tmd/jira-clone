@@ -76,13 +76,13 @@ export const ManualTime = () => {
         className="w-fit mt-7"
       />
       <div className="py-7">
-        <div className="flex justify-center items-center font-mono w-full text-7xl select-none">
+        <div className="flex justify-center items-center font-mono w-full text-5xl sm:text-7xl select-none">
           <Input
             value={inputHours.toString().padStart(2, "0")}
             onChange={(e) => setInputHours(+e.target.value)}
             onFocus={handleFocus}
             type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center shadow-none bg-muted"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-14 sm:h-20 w-[4.1rem] sm:w-[5.9rem] px-0 font-mono !text-5xl sm:!text-7xl text-center bg-muted"
           />
           :
           <Input
@@ -91,7 +91,7 @@ export const ManualTime = () => {
             onFocus={handleFocus}
             onBlur={handleMaxMinutes}
             type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center shadow-none bg-muted"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-14 sm:h-20 w-[4.1rem] sm:w-[5.9rem] px-0 font-mono !text-5xl sm:!text-7xl text-center bg-muted"
           />
           :
           <Input
@@ -101,13 +101,13 @@ export const ManualTime = () => {
             onBlur={handleMaxSeconds}
             onSubmit={handleMaxSeconds}
             type="number"
-            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-20 w-[5.9rem] px-0 font-mono !text-7xl text-center shadow-none bg-muted"
+            className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-14 sm:h-20 w-[4.1rem] sm:w-[5.9rem] px-0 font-mono !text-5xl sm:!text-7xl text-center bg-muted"
           />
         </div>
-        <div className="flex text-center justify-center gap-x-2 px-1 select-none text-muted-foreground">
-          <span className="w-32">Hours</span>
-          <span className="w-32">Minutes</span>
-          <span className="w-32">Seconds</span>
+        <div className="flex text-center justify-center gap-x-0 sm:gap-x-2 px-1 select-none text-muted-foreground">
+          <span className="w-24 sm:w-32">Hours</span>
+          <span className="w-24 sm:w-32">Minutes</span>
+          <span className="w-24 sm:w-32">Seconds</span>
         </div>
       </div>
       <div className="flex justify-center gap-x-3">
