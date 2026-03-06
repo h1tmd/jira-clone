@@ -2,19 +2,14 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DottedSeparator } from "@/components/dotted-separator";
-import { useTaskId } from "@/features/tasks/hooks/use-task-id";
-import { PageError } from "@/components/page-error";
 
-import { useGetTaskTimes } from "../api/use-get-task-times";
+import { TaskTime } from "../types";
 
-export const TaskTimeDetails = () => {
-  const taskId = useTaskId();
-  const { data: taskTimes } = useGetTaskTimes({ taskId });
+interface TaskTimeDetailsProps {
+  taskTimes: TaskTime[];
+}
 
-  if (taskTimes === undefined) {
-    return <PageError message="Task not found" />;
-  }
-
+export const TaskTimeDetails = ({ taskTimes }: TaskTimeDetailsProps) => {
   const dateToString = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
@@ -42,6 +37,14 @@ export const TaskTimeDetails = () => {
       .join(", ");
   };
 
+  const getTotalTime = (times: TaskTime[]) => {
+    const totalSeconds = times.reduce(
+      (n, { secondsTracked }) => n + secondsTracked,
+      0,
+    );
+    return secondsToString(totalSeconds);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -55,12 +58,7 @@ export const TaskTimeDetails = () => {
           <CardContent className="mt-7">
             <p className="text-lg font-bold">Overall Total Time</p>
             <p className="text-lg font-semibold text-muted-foreground">
-              {secondsToString(
-                taskTimes.reduce(
-                  (n, { secondsTracked }) => n + secondsTracked,
-                  0,
-                ),
-              )}
+              {getTotalTime(taskTimes)}
             </p>
           </CardContent>
           <DottedSeparator className="px-7" />
@@ -74,8 +72,8 @@ export const TaskTimeDetails = () => {
                       <p className="text-lg font-medium truncate">
                         {dateToString(new Date(taskTime.dayTracked))}
                       </p>
-                      <p>
-                        Total Time: {secondsToString(taskTime.secondsTracked)}
+                      <p className="text-muted-foreground">
+                        {secondsToString(taskTime.secondsTracked)}
                       </p>
                     </CardContent>
                   </Card>

@@ -4,5 +4,5 @@ export type TaskTime = Models.Document & {
   taskId: string;
   workspaceId: string;
   secondsTracked: number;
-  dayTracked: Date;
+  dayTracked: string;
 };
