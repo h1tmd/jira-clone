@@ -1,15 +1,28 @@
 "use client";
 
+import { TimerIcon } from "lucide-react";
+import Link from "next/link";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { DottedSeparator } from "@/components/dotted-separator";
+import { useTaskId } from "@/features/tasks/hooks/use-task-id";
+import { Button } from "@/components/ui/button";
 
 import { TaskTime } from "../types";
 
 interface TaskTimeDetailsProps {
   taskTimes: TaskTime[];
+  showTrackButton?: boolean;
 }
 
-export const TaskTimeDetails = ({ taskTimes }: TaskTimeDetailsProps) => {
+export const TaskTimeDetails = ({
+  taskTimes,
+  showTrackButton,
+}: TaskTimeDetailsProps) => {
+  const workspaceId = useWorkspaceId();
+  const taskId = useTaskId();
+
   const dateToString = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
@@ -47,10 +60,18 @@ export const TaskTimeDetails = ({ taskTimes }: TaskTimeDetailsProps) => {
 
   return (
     <Card className="shadow-none">
-      <CardHeader>
+      <CardHeader className="flex flex-row justify-between items-center">
         <CardTitle className="text-xl font-bold">
           Tracked Time Details
         </CardTitle>
+        {showTrackButton && (
+          <Button className="!m-0" size={"sm"} variant={"secondary"} asChild>
+            <Link href={`/workspaces/${workspaceId}/time-tracking/${taskId}`}>
+              <TimerIcon className="size-4 lg:mr-2" />
+              <span className="hidden lg:block">Track Task</span>
+            </Link>
+          </Button>
+        )}
       </CardHeader>
       <DottedSeparator className="px-7" />
       {taskTimes.length !== 0 ? (
