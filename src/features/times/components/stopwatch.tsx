@@ -1,17 +1,54 @@
 "use client";
 
-import { PauseIcon, PlayIcon, RotateCcwIcon } from "lucide-react";
+import { PauseIcon, PlayIcon, PlusIcon, RotateCcwIcon } from "lucide-react";
 import { useStopwatch } from "react-timer-hook";
 import React, { useState } from "react";
+import z from "zod";
 
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 import { DatePicker } from "@/components/date-picker";
 import { Button } from "@/components/ui/button";
 
+import { useAddTaskTime } from "../api/use-add-task-time";
+import { addTimeSchema } from "../schemas";
+
 export const Stopwatch = () => {
+  const { mutate, isPending } = useAddTaskTime();
+  const taskId = useTaskId();
+  const workspaceId = useWorkspaceId();
+
   const [inputDate, setInputDate] = useState(new Date());
 
-  const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
-    useStopwatch({ autoStart: false });
+  const {
+    seconds,
+    minutes,
+    hours,
+    days,
+    isRunning,
+    start,
+    pause,
+    reset,
+    totalSeconds,
+  } = useStopwatch({ autoStart: false });
+
+  const handleAddTime = () => {
+    const values: z.infer<typeof addTimeSchema> = {
+      secondsTracked: totalSeconds,
+      dayTracked: inputDate,
+      taskId,
+      workspaceId,
+    };
+    mutate(
+      { json: { ...values } },
+      {
+        onSuccess: () => {
+          reset(undefined, false);
+          setInputDate(new Date());
+        },
+      },
+    );
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -46,6 +83,16 @@ export const Stopwatch = () => {
         </Button>
         <Button size={"lg"} onClick={isRunning ? pause : start}>
           {isRunning ? <PauseIcon className="size-16" /> : <PlayIcon />}
+        </Button>
+      </div>
+      <div className="flex justify-center gap-x-3 mt-3">
+        <Button
+          onClick={handleAddTime}
+          disabled={totalSeconds == 0 || isPending || isRunning}
+          size={"lg"}
+        >
+          <PlusIcon className="size-16 mr-2" />
+          Add to task
         </Button>
       </div>
     </div>
