@@ -17,11 +17,14 @@ export const TimerExpiredModal = () => {
           <CardTitle>Times Up!</CardTitle>
         </CardHeader>
         <CardContent>
-          Timer has finished.
-          <DottedSeparator className="py-7" />
+          <p className="font-semibold text-muted-foreground">
+            Timer has finished. Click the <strong>Add to Task</strong> button to
+            record this session.
+          </p>
+          <DottedSeparator className="py-3" />
           <div className="flex items-center justify-end">
             <Button type="button" size={"lg"} onClick={close}>
-              Okay
+              OK
             </Button>
           </div>
         </CardContent>
