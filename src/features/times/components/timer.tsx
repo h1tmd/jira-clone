@@ -2,21 +2,33 @@
 
 import { useTimer } from "react-timer-hook";
 import React, { useState } from "react";
+import z from "zod";
 import {
   CheckIcon,
   PauseIcon,
   PencilIcon,
   PlayIcon,
+  PlusIcon,
   RotateCcwIcon,
 } from "lucide-react";
 
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { useTimerExpiredModal } from "../hooks/use-timer-expired-modal";
+import { useTaskId } from "@/features/tasks/hooks/use-task-id";
+import { DatePicker } from "@/components/date-picker";
+import { useConfirm } from "@/hooks/use-confirm";
 import { Button } from "@/components/ui/button";
+import { secondsToString } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 
-import { useTimerExpiredModal } from "../hooks/use-timer-expired-modal";
-import { DatePicker } from "@/components/date-picker";
+import { useAddTaskTime } from "../api/use-add-task-time";
+import { addTimeSchema } from "../schemas";
 
 export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
+  const { mutate, isPending } = useAddTaskTime();
+  const taskId = useTaskId();
+  const workspaceId = useWorkspaceId();
+
   const [isEditing, setIsEditing] = useState(false);
 
   const [inputHours, setInputHours] = useState(0);
@@ -64,13 +76,14 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
     setInputMinutes(numMinutes);
   };
 
-  const setTimer = () => {
-    // Convert to seconds
-    const timeSetInSeconds =
-      inputHours * 3600 + inputMinutes * 60 + inputSeconds;
+  // Converts input time to seconds
+  const getInputSeconds = () => {
+    return inputHours * 3600 + inputMinutes * 60 + inputSeconds;
+  };
 
+  const setTimer = () => {
     const time = new Date();
-    time.setSeconds(time.getSeconds() + timeSetInSeconds);
+    time.setSeconds(time.getSeconds() + getInputSeconds());
     restart(time, false);
   };
 
@@ -82,8 +95,45 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
     setIsEditing((prev) => !prev);
   };
 
+  // How long the timer was running compared to the time set
+  const getSecondsSpent = () => {
+    const secondsSpent = getInputSeconds() - totalSeconds;
+
+    return secondsSpent;
+  };
+
+  const [AddDialog, confirmAdd] = useConfirm(
+    "Add tracked session",
+    `This will add ${secondsToString(getSecondsSpent())} into the task`,
+    "primary",
+  );
+
+  const handleAddTime = async () => {
+    const ok = await confirmAdd();
+    if (!ok) return;
+
+    const values: z.infer<typeof addTimeSchema> = {
+      secondsTracked: getSecondsSpent(),
+      dayTracked: inputDate,
+      taskId,
+      workspaceId,
+    };
+    mutate(
+      { json: { ...values } },
+      {
+        onSuccess: () => {
+          setInputHours(0);
+          setInputMinutes(0);
+          setInputSeconds(0);
+          setInputDate(new Date());
+        },
+      },
+    );
+  };
+
   return (
     <div className="flex flex-col items-center">
+      <AddDialog />
       <DatePicker
         value={inputDate}
         onChange={(date) => setInputDate(date)}
@@ -157,6 +207,21 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
           variant={"secondary"}
         >
           {isEditing ? <CheckIcon className="size-16" /> : <PencilIcon />}
+        </Button>
+      </div>
+      <div className="flex justify-center gap-x-3 mt-3">
+        <Button
+          onClick={handleAddTime}
+          disabled={
+            getSecondsSpent() === 0 || isPending || isRunning || isEditing
+          }
+          size={"lg"}
+          variant={
+            getSecondsSpent() === getInputSeconds() ? "primary" : "secondary"
+          }
+        >
+          <PlusIcon className="size-16 mr-2" />
+          Add to task
         </Button>
       </div>
     </div>
