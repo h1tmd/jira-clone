@@ -20,3 +20,17 @@ export function snakeCaseToTitleCase(str: string) {
     .replace(/_/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
+
+export function secondsToString(totalSeconds: number) {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = Math.floor(totalSeconds % 60);
+
+  return [
+    hours != 0 && `${hours} hours`,
+    minutes != 0 && `${minutes} minutes`,
+    seconds != 0 && `${seconds} seconds`,
+  ]
+    .filter(Boolean)
+    .join(", ");
+}

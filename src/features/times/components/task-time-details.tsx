@@ -8,6 +8,7 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 import { Button } from "@/components/ui/button";
+import { secondsToString } from "@/lib/utils";
 
 import { TaskTime } from "../types";
 
@@ -34,20 +35,6 @@ export const TaskTimeDetails = ({
       date,
     );
     return formattedDate;
-  };
-
-  const secondsToString = (totalSeconds: number) => {
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = Math.floor(totalSeconds % 60);
-
-    return [
-      hours != 0 && `${hours} hours`,
-      minutes != 0 && `${minutes} minutes`,
-      seconds != 0 && `${seconds} seconds`,
-    ]
-      .filter(Boolean)
-      .join(", ");
   };
 
   const getTotalTime = (times: TaskTime[]) => {
