@@ -27,9 +27,9 @@ export function secondsToString(totalSeconds: number) {
   const seconds = Math.floor(totalSeconds % 60);
 
   return [
-    hours != 0 && `${hours} hours`,
-    minutes != 0 && `${minutes} minutes`,
-    seconds != 0 && `${seconds} seconds`,
+    hours != 0 && `${hours} ${hours === 1 ? "hour" : "hours"}`,
+    minutes != 0 && `${minutes} ${minutes === 1 ? "minute" : "minutes"}`,
+    seconds != 0 && `${seconds} ${seconds === 1 ? "second" : "seconds"}`,
   ]
     .filter(Boolean)
     .join(", ");
