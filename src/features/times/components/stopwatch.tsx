@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 
 import { useAddTaskTime } from "../api/use-add-task-time";
 import { addTimeSchema } from "../schemas";
+import { useConfirm } from "@/hooks/use-confirm";
+import { secondsToString } from "@/lib/utils";
 
 export const Stopwatch = () => {
   const { mutate, isPending } = useAddTaskTime();
@@ -32,7 +34,16 @@ export const Stopwatch = () => {
     totalSeconds,
   } = useStopwatch({ autoStart: false });
 
-  const handleAddTime = () => {
+  const [AddDialog, confirmAdd] = useConfirm(
+    "Add tracked session",
+    `This will add a new session of ${secondsToString(totalSeconds)} into the task.`,
+    "primary",
+  );
+
+  const handleAddTime = async () => {
+    const ok = await confirmAdd();
+    if (!ok) return;
+
     const values: z.infer<typeof addTimeSchema> = {
       secondsTracked: totalSeconds,
       dayTracked: inputDate,
@@ -52,6 +63,7 @@ export const Stopwatch = () => {
 
   return (
     <div className="flex flex-col items-center">
+      <AddDialog />
       <DatePicker
         value={inputDate}
         onChange={(date) => setInputDate(date)}
@@ -90,6 +102,7 @@ export const Stopwatch = () => {
           onClick={handleAddTime}
           disabled={totalSeconds == 0 || isPending || isRunning}
           size={"lg"}
+          variant={"secondary"}
         >
           <PlusIcon className="size-16 mr-2" />
           Add to task

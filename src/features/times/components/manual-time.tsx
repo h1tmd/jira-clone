@@ -7,7 +7,9 @@ import z from "zod";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 import { DatePicker } from "@/components/date-picker";
+import { useConfirm } from "@/hooks/use-confirm";
 import { Button } from "@/components/ui/button";
+import { secondsToString } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 
 import { useAddTaskTime } from "../api/use-add-task-time";
@@ -48,7 +50,16 @@ export const ManualTime = () => {
     return inputHours * 3600 + inputMinutes * 60 + inputSeconds;
   };
 
-  const handleAddTime = () => {
+  const [AddDialog, confirmAdd] = useConfirm(
+    "Add tracked session",
+    `This will add a new session of ${secondsToString(convertToSeconds())} into the task.`,
+    "primary",
+  );
+
+  const handleAddTime = async () => {
+    const ok = await confirmAdd();
+    if (!ok) return;
+
     const values: z.infer<typeof addTimeSchema> = {
       secondsTracked: convertToSeconds(),
       dayTracked: inputDate,
@@ -70,6 +81,7 @@ export const ManualTime = () => {
 
   return (
     <div className="flex flex-col items-center">
+      <AddDialog />
       <DatePicker
         value={inputDate}
         onChange={(date) => setInputDate(date)}

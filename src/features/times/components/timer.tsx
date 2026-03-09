@@ -104,7 +104,7 @@ export const Timer = ({ defaultTimer }: { defaultTimer: Date }) => {
 
   const [AddDialog, confirmAdd] = useConfirm(
     "Add tracked session",
-    `This will add ${secondsToString(getSecondsSpent())} into the task`,
+    `This will add a new session of ${secondsToString(getSecondsSpent())} into the task.`,
     "primary",
   );
 
