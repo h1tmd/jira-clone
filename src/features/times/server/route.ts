@@ -101,6 +101,29 @@ const app = new Hono()
     );
 
     return c.json({ data: times.documents });
+  })
+  .get("/task-time/:taskTimeId", sessionMiddleware, async (c) => {
+    const user = c.get("user");
+    const databases = c.get("databases");
+    const { taskTimeId } = c.req.param();
+
+    const taskTime = await databases.getDocument<TaskTime>(
+      DATABASE_ID,
+      TIMES_ID,
+      taskTimeId,
+    );
+
+    const member = await getMember({
+      databases,
+      workspaceId: taskTime.workspaceId,
+      userId: user.$id,
+    });
+
+    if (!member) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    return c.json({ data: taskTime });
   });
 
 export default app;
