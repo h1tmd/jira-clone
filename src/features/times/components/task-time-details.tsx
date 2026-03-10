@@ -1,6 +1,6 @@
 "use client";
 
-import { TimerIcon } from "lucide-react";
+import { PencilIcon, TimerIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,6 +10,7 @@ import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 import { Button } from "@/components/ui/button";
 import { secondsToString } from "@/lib/utils";
 
+import { useEditTaskTimeModal } from "../hooks/use-edit-task-time-modal";
 import { TaskTime } from "../types";
 
 interface TaskTimeDetailsProps {
@@ -23,6 +24,8 @@ export const TaskTimeDetails = ({
 }: TaskTimeDetailsProps) => {
   const workspaceId = useWorkspaceId();
   const taskId = useTaskId();
+
+  const { open } = useEditTaskTimeModal();
 
   const dateToString = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -76,13 +79,23 @@ export const TaskTimeDetails = ({
               {taskTimes.map((taskTime) => (
                 <li key={taskTime.$id}>
                   <Card className="shadow-none rounded-lg hover:opacity-75 transition">
-                    <CardContent className="p-4">
-                      <p className="text-lg font-medium truncate">
-                        {dateToString(new Date(taskTime.dayTracked))}
-                      </p>
-                      <p className="text-muted-foreground">
-                        {secondsToString(taskTime.secondsTracked)}
-                      </p>
+                    <CardContent className="p-4 flex">
+                      <div className="flex flex-col">
+                        <p className="text-lg font-medium truncate">
+                          {dateToString(new Date(taskTime.dayTracked))}
+                        </p>
+                        <p className="text-muted-foreground">
+                          {secondsToString(taskTime.secondsTracked)}
+                        </p>
+                      </div>
+                      <Button
+                        onClick={() => open(taskTime.$id)}
+                        className="ml-auto"
+                        size={"icon"}
+                        variant={"secondary"}
+                      >
+                        <PencilIcon className="size-4" />
+                      </Button>
                     </CardContent>
                   </Card>
                 </li>
