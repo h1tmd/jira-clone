@@ -1,16 +1,18 @@
 "use client";
 
-import { PencilIcon, TimerIcon } from "lucide-react";
+import { PencilIcon, TimerIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { useTaskId } from "@/features/tasks/hooks/use-task-id";
+import { useConfirm } from "@/hooks/use-confirm";
 import { Button } from "@/components/ui/button";
 import { secondsToString } from "@/lib/utils";
 
 import { useEditTaskTimeModal } from "../hooks/use-edit-task-time-modal";
+import { useDeleteTaskTime } from "../api/use-delete-task-time";
 import { TaskTime } from "../types";
 
 interface TaskTimeDetailsProps {
@@ -26,6 +28,12 @@ export const TaskTimeDetails = ({
   const taskId = useTaskId();
 
   const { open } = useEditTaskTimeModal();
+  const { mutate, isPending } = useDeleteTaskTime();
+  const [DeleteDialog, confirmDelete] = useConfirm(
+    "Delete tracked session",
+    "This will permanently delete the tracked session. Are you sure?",
+    "destructive",
+  );
 
   const dateToString = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -48,8 +56,20 @@ export const TaskTimeDetails = ({
     return secondsToString(totalSeconds);
   };
 
+  const handleDelete = async (taskTimeId: string) => {
+    const ok = await confirmDelete();
+    if (!ok) return;
+
+    mutate({
+      param: {
+        taskTimeId,
+      },
+    });
+  };
+
   return (
     <Card className="shadow-none">
+      <DeleteDialog />
       <CardHeader className="flex flex-row justify-between items-center">
         <CardTitle className="text-xl font-bold">
           Tracked Time Details
@@ -88,14 +108,23 @@ export const TaskTimeDetails = ({
                           {secondsToString(taskTime.secondsTracked)}
                         </p>
                       </div>
-                      <Button
-                        onClick={() => open(taskTime.$id)}
-                        className="ml-auto"
-                        size={"icon"}
-                        variant={"secondary"}
-                      >
-                        <PencilIcon className="size-4" />
-                      </Button>
+                      <div className="ml-auto flex gap-x-2 w-fit">
+                        <Button
+                          onClick={() => open(taskTime.$id)}
+                          size={"icon"}
+                          variant={"secondary"}
+                        >
+                          <PencilIcon className="size-4" />
+                        </Button>
+
+                        <Button
+                          onClick={() => handleDelete(taskTime.$id)}
+                          size={"icon"}
+                          variant={"destructive"}
+                        >
+                          <TrashIcon className="size-4" />
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 </li>

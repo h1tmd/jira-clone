@@ -180,6 +180,34 @@ const app = new Hono()
 
       return c.json({ data: taskTime });
     },
-  );
+  )
+  .delete("/task-time/:taskTimeId", sessionMiddleware, async (c) => {
+    const databases = c.get("databases");
+    const user = c.get("user");
+
+    const { taskTimeId } = c.req.param();
+
+    const existingTaskTime = await databases.getDocument<TaskTime>(
+      DATABASE_ID,
+      TIMES_ID,
+      taskTimeId,
+    );
+
+    const member = await getMember({
+      databases,
+      workspaceId: existingTaskTime.workspaceId,
+      userId: user.$id,
+    });
+
+    if (!member) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    await databases.deleteDocument(DATABASE_ID, TIMES_ID, taskTimeId);
+
+    return c.json({
+      data: { $id: existingTaskTime.$id, taskId: existingTaskTime.taskId },
+    });
+  });
 
 export default app;
