@@ -65,6 +65,16 @@ const app = new Hono()
         return c.json({ error: "Missing workspaceId" }, 400);
       }
 
+      const member = await getMember({
+        databases,
+        workspaceId,
+        userId: user.$id,
+      });
+
+      if (!member) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
       const times = await databases.listDocuments(DATABASE_ID, TIMES_ID, [
         Query.equal("workspaceId", workspaceId),
       ]);
