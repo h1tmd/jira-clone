@@ -134,6 +134,52 @@ const app = new Hono()
     }
 
     return c.json({ data: taskTime });
-  });
+  })
+  .patch(
+    "/:taskTimeId",
+    sessionMiddleware,
+    zValidator(
+      "json",
+      z.object({
+        secondsTracked: z.number().int().positive().min(0),
+        dayTracked: z.coerce.date(),
+      }),
+    ),
+    async (c) => {
+      const databases = c.get("databases");
+      const user = c.get("user");
+
+      const { secondsTracked, dayTracked } = c.req.valid("json");
+      const { taskTimeId } = c.req.param();
+
+      const taskTimeToUpdate = await databases.getDocument<TaskTime>(
+        DATABASE_ID,
+        TIMES_ID,
+        taskTimeId,
+      );
+
+      const member = await getMember({
+        databases,
+        workspaceId: taskTimeToUpdate.workspaceId,
+        userId: user.$id,
+      });
+
+      if (!member) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const taskTime = await databases.updateDocument(
+        DATABASE_ID,
+        TIMES_ID,
+        taskTimeId,
+        {
+          secondsTracked,
+          dayTracked,
+        },
+      );
+
+      return c.json({ data: taskTime });
+    },
+  );
 
 export default app;
