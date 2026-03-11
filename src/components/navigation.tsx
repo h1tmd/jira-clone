@@ -51,7 +51,7 @@ export const Navigation = () => {
   const pathname = usePathname();
 
   return (
-    <ul className="flex flex-col">
+    <ul className="flex flex-col gap-y-2">
       {routes.map((item) => {
         const fullHref = `/workspaces/${workspaceId}${item.href}`;
         const isActive = pathname === fullHref;
@@ -61,11 +61,12 @@ export const Navigation = () => {
           <Link key={item.href} href={fullHref}>
             <div
               className={cn(
-                "flex items-center gap-2.5 p-2.5 rounded-md font-medium hover:text-primary transition text-neutral-500",
-                isActive && "bg-white shadow-sm hover:opacity-100 text-primary",
+                "flex items-center gap-2.5 p-2.5 rounded-full hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition",
+                isActive &&
+                  "ring-sidebar-ring bg-sidebar-accent text-sidebar-accent-foreground",
               )}
             >
-              <Icon className="size-5 text-neutral-500" />
+              <Icon className="size-5" />
               {item.label}
             </div>
           </Link>
