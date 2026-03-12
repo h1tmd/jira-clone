@@ -6,7 +6,7 @@ import { AnalyticsCard } from "./analytics-cards";
 
 export const Analytics = ({ data }: ProjectAnalyticsResponseType) => {
   return (
-    <ScrollArea className="border rounded-lg w-full whitespace-nowrap shrink-0">
+    <ScrollArea className="border rounded-lg w-full whitespace-nowrap shrink-0 bg-card text-card-foreground">
       <div className="w-full flex flex-row">
         <div className="flex items-center flex-1">
           <AnalyticsCard
@@ -51,7 +51,6 @@ export const Analytics = ({ data }: ProjectAnalyticsResponseType) => {
             variant={data.incompleteTaskDifference > 0 ? "up" : "down"}
             increaseValue={data.incompleteTaskDifference}
           />
-          <DottedSeparator direction="vertical" />
         </div>
       </div>
       <ScrollBar orientation="horizontal" />
