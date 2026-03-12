@@ -1,6 +1,6 @@
 "use client";
 
-import { SettingsIcon, UsersIcon } from "lucide-react";
+import { SettingsIcon, TimerIcon, UsersIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
@@ -27,16 +27,22 @@ const routes = [
     activeIcon: GoCheckCircleFill,
   },
   {
-    label: "Settings",
-    href: "/settings",
-    icon: SettingsIcon,
-    activeIcon: SettingsIcon,
+    label: "Time Tracking",
+    href: "/time-tracking",
+    icon: TimerIcon,
+    activeIcon: TimerIcon,
   },
   {
     label: "Members",
     href: "/members",
     icon: UsersIcon,
     activeIcon: UsersIcon,
+  },
+  {
+    label: "Settings",
+    href: "/settings",
+    icon: SettingsIcon,
+    activeIcon: SettingsIcon,
   },
 ];
 

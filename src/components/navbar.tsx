@@ -15,6 +15,10 @@ const pathnameMap = {
     title: "My Project",
     description: "View tasks of your project here",
   },
+  "time-tracking": {
+    title: "Time Tracker",
+    description: "Record how much time you spend on a task",
+  },
 };
 
 const defaultMap = {
