@@ -60,7 +60,7 @@ export const TaskViewSwitcher = ({
     <Tabs
       defaultValue={view}
       onValueChange={setView}
-      className="flex-1 w-full border rounded-lg"
+      className="flex-1 w-full border rounded-lg bg-card text-card-foreground"
     >
       <div className="h-full flex flex-col overflow-auto p-4">
         <div className="flex flex-col gap-y-2 lg:flex-row justify-between items-center">
@@ -76,7 +76,7 @@ export const TaskViewSwitcher = ({
             </TabsTrigger>
           </TabsList>
           <Button onClick={open} size="sm" className="w-full lg:w-auto">
-            <PlusIcon className="size-4 mr-2" />
+            <PlusIcon className="size-4" />
             New
           </Button>
         </div>

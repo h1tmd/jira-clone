@@ -68,7 +68,7 @@ export const TaskTimeDetails = ({
   };
 
   return (
-    <Card className="shadow-none">
+    <Card className="shadow-none h-fit">
       <DeleteDialog />
       <CardHeader className="flex flex-row justify-between items-center">
         <CardTitle className="text-xl font-bold">

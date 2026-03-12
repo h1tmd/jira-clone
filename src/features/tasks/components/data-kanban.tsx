@@ -166,7 +166,7 @@ export const DataKanban = ({ data, onChange }: DataKanbanProps) => {
           return (
             <div
               key={board}
-              className="flex-1 mx-2 bg-muted p-1.5 rounded-md min-w-[200px]"
+              className="flex-1 mx-2 bg-muted dark:bg-muted/40 p-1.5 rounded-md min-w-[200px]"
             >
               {/* Task Status Header */}
               <KanbanColumnHeader

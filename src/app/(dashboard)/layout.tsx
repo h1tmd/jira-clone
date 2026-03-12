@@ -21,7 +21,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <EditTaskTimeModal />
       <TimerExpiredModal />
       <div className="flex w-full h-full">
-        <div className="fixed left-0 top-0 hidden lg:block lg:w-[264px] h-full overflow-y-auto">
+        <div className="fixed left-0 top-0 hidden bg-sidebar lg:block lg:w-[264px] h-full overflow-y-auto">
           <Sidebar />
         </div>
         <div className="lg:pl-[264px] w-full">

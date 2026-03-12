@@ -21,12 +21,12 @@ export const TimeTrackerSwitcher = () => {
     <Tabs
       defaultValue={trackMethod}
       onValueChange={setTrackMethod}
-      className="flex-1 w-full border rounded-xl h-fit"
+      className="flex-1 w-full border rounded-xl h-fit bg-card text-card-foreground"
     >
       <div className="h-full flex flex-col overflow-auto p-6">
         <div className="text-xl font-bold tracking-tight">Time Tracker</div>
         <DottedSeparator className="py-6 px-1" />
-        <TabsList className="w-full lg:w-auto flex justify-center">
+        <TabsList className="w-full lg:w-fit flex justify-center place-self-center">
           <TabsTrigger className="h-8 w-full lg:w-auto" value="timer">
             Timer
           </TabsTrigger>

@@ -77,11 +77,11 @@ export const TaskList = ({ data, total }: TaskListProps) => {
 
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-muted rounded-lg p-4">
+      <div className="bg-muted/50 rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Tasks ({total})</p>
           <Button variant={"muted"} size={"icon"} onClick={createTask}>
-            <PlusIcon className="size-4 text-neutral-400" />
+            <PlusIcon className="size-4 text-muted-foreground" />
           </Button>
         </div>
         <DottedSeparator className="my-4" />
@@ -89,12 +89,12 @@ export const TaskList = ({ data, total }: TaskListProps) => {
           {data.map((task) => (
             <li key={task.$id}>
               <Link href={`/workspaces/${workspaceId}/tasks/${task.$id}`}>
-                <Card className="shadow-none rounded-lg hover:opacity-75 transition">
+                <Card className="shadow-none rounded-lg hover:opacity-75 transition bg-muted/80">
                   <CardContent className="p-4">
                     <p className="text-lg font-medium truncate">{task.name}</p>
                     <div className="flex items-center gap-x-2">
                       <p>{task.project?.name}</p>
-                      <div className="size-1 rounded-full bg-neutral-300" />
+                      <div className="size-1 rounded-full bg-muted-foreground" />
                       <div className="text-sm text-muted-foreground flex items-center">
                         <CalendarIcon className="size-3 mr-1" />
                         <span className="truncate">
@@ -111,7 +111,7 @@ export const TaskList = ({ data, total }: TaskListProps) => {
             No tasks found
           </li>
         </ul>
-        <Button variant={"muted"} className="mt-4 w-full" asChild>
+        <Button variant={"secondary"} className="mt-4 w-full" asChild>
           <Link href={`/workspaces/${workspaceId}/tasks`}>Show All</Link>
         </Button>
       </div>
@@ -131,11 +131,11 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
 
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-white border rounded-lg p-4">
+      <div className="bg-card text-card-foreground border rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Projects ({total})</p>
           <Button variant={"secondary"} size={"icon"} onClick={createProject}>
-            <PlusIcon className="size-4 text-neutral-400" />
+            <PlusIcon className="size-4 text-card-foreground" />
           </Button>
         </div>
         <DottedSeparator className="my-4" />
@@ -178,7 +178,7 @@ export const MembersList = ({ data, total }: MembersListProps) => {
 
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-white border rounded-lg p-4">
+      <div className="bg-card text-card-foreground border rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Members ({total})</p>
           <Button variant={"secondary"} size={"icon"} asChild>

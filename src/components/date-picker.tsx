@@ -39,7 +39,7 @@ export const DatePicker = ({
           {value ? format(value, "PPP") : <span>{placeholder}</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent className="bg-background">
         <Calendar
           mode="single"
           selected={value}
