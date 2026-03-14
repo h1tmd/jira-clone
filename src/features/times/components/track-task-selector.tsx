@@ -19,7 +19,9 @@ export const TrackTaskSelector = ({ tasks }: TrackTaskSelectorProps) => {
     <div className="flex flex-col gap-y-4 w-full">
       <div className="bg-muted/50 rounded-lg p-4">
         <div className="flex items-center justify-between">
-          <p className="text-lg font-semibold">Tasks ({tasks.length})</p>
+          <p className="text-lg font-semibold">
+            Tasks Assigned to You ({tasks.length})
+          </p>
         </div>
         <DottedSeparator className="my-4" />
         <ul className="flex flex-col gap-y-4">

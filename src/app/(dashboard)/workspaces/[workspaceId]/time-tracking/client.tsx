@@ -26,10 +26,24 @@ export const TimeTrackingClient = () => {
     return <PageError message="Error loading data" />;
   }
 
+  // Get current as member
+  const currentMember = members.documents.find(
+    (member) => member.userId === current.$id,
+  );
+
+  if (!currentMember) {
+    return <PageError message="Error finding current member" />;
+  }
+
+  // Filter tasks that are assigned to current member
+  const filteredTasks = tasks.documents.filter((task) => {
+    return task.assigneeId === currentMember.$id;
+  });
+
   return (
     <div className="flex flex-col items-start h-full gap-y-4">
       <p className="text-2xl font-bold">Select a task first to track:</p>
-      <TrackTaskSelector tasks={tasks.documents} />
+      <TrackTaskSelector tasks={filteredTasks} />
     </div>
   );
 };
