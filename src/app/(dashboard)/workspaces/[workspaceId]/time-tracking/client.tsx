@@ -7,6 +7,7 @@ import { useGetTasks } from "@/features/tasks/api/use-get-tasks";
 import { useCurrent } from "@/features/auth/api/use-current";
 import { PageLoader } from "@/components/page-loader";
 import { PageError } from "@/components/page-error";
+import { TaskStatus } from "@/features/tasks/types";
 
 export const TimeTrackingClient = () => {
   const workspaceId = useWorkspaceId();
@@ -37,12 +38,14 @@ export const TimeTrackingClient = () => {
 
   // Filter tasks that are assigned to current member
   const filteredTasks = tasks.documents.filter((task) => {
-    return task.assigneeId === currentMember.$id;
+    return (
+      task.assigneeId === currentMember.$id && task.status !== TaskStatus.DONE
+    );
   });
 
   return (
     <div className="flex flex-col items-start h-full gap-y-4">
-      <p className="text-2xl font-bold">Select a task first to track:</p>
+      <p className="text-2xl font-bold">Select a task first to track</p>
       <TrackTaskSelector tasks={filteredTasks} />
     </div>
   );
