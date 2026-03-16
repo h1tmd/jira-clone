@@ -20,11 +20,11 @@ export const TrackTaskSelector = ({ tasks }: TrackTaskSelectorProps) => {
       <div className="bg-muted/50 rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">
-            Tasks Assigned to You ({tasks.length})
+            Unfinished Tasks ({tasks.length})
           </p>
         </div>
         <DottedSeparator className="my-4" />
-        <ul className="flex flex-col gap-y-4">
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-2">
           {tasks.map((task) => (
             <li key={task.$id}>
               <Link
