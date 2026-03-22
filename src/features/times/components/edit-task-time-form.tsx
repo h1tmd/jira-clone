@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { DatePicker } from "@/components/date-picker";
+import { TimePicker } from "@/components/time-picker";
 import { cn, secondsToTime } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -87,11 +88,18 @@ export const EditTaskTimeForm = ({
       </div>
       <CardContent className="p-7">
         <div className="flex flex-col items-center">
-          <DatePicker
-            value={inputDate}
-            onChange={(date) => setInputDate(date)}
-            className="w-fit"
-          />
+          <div className="flex flex-row border w-full md:w-fit rounded-lg gap-2 items-center justify-center p-4">
+            <DatePicker
+              value={inputDate}
+              onChange={(date) => setInputDate(date)}
+              className="w-fit"
+            />
+            <TimePicker
+              value={inputDate}
+              onChange={(date) => setInputDate(date)}
+              className="w-fit"
+            />
+          </div>
           <div className="pt-3">
             <div className="flex justify-center items-center font-mono w-full text-5xl sm:text-7xl select-none">
               <Input

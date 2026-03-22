@@ -8,6 +8,7 @@ import z from "zod";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 import { DatePicker } from "@/components/date-picker";
+import { TimePicker } from "@/components/time-picker";
 import { Button } from "@/components/ui/button";
 
 import { useAddTaskTime } from "../api/use-add-task-time";
@@ -64,11 +65,18 @@ export const Stopwatch = () => {
   return (
     <div className="flex flex-col items-center">
       <AddDialog />
-      <DatePicker
-        value={inputDate}
-        onChange={(date) => setInputDate(date)}
-        className="w-fit mt-7"
-      />
+      <div className="flex flex-col md:flex-row border rounded-lg gap-2 items-center justify-center p-4 mt-7">
+        <DatePicker
+          value={inputDate}
+          onChange={(date) => setInputDate(date)}
+          className="w-fit"
+        />
+        <TimePicker
+          value={inputDate}
+          onChange={(date) => setInputDate(date)}
+          className="w-fit"
+        />
+      </div>
       <div className="py-7">
         <div className="text-5xl sm:text-7xl flex justify-center font-mono gap-x-1 py-1 px-1 select-none">
           <span>{(days * 24 + hours).toString().padStart(2, "0")}</span>:
