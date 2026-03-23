@@ -48,7 +48,7 @@ export const TrackTaskSelector = ({ tasks }: TrackTaskSelectorProps) => {
               </Link>
             </li>
           ))}
-          <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
+          <li className="text-sm text-muted-foreground text-center md:col-span-2 hidden first-of-type:block">
             No tasks found
           </li>
         </ul>
