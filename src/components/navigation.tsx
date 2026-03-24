@@ -11,6 +11,8 @@ import {
 } from "react-icons/go";
 
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { useGetMembers } from "@/features/members/api/use-get-members";
+import { useCurrent } from "@/features/auth/api/use-current";
 import { cn } from "@/lib/utils";
 
 const routes = [
@@ -50,6 +52,15 @@ export const Navigation = () => {
   const workspaceId = useWorkspaceId();
   const pathname = usePathname();
 
+  const { data: current } = useCurrent();
+  const { data: members } = useGetMembers({
+    workspaceId,
+  });
+
+  const currentMemberId = members?.documents.find(
+    (member) => member.userId === current?.$id,
+  )?.$id;
+
   return (
     <ul className="flex flex-col gap-y-2">
       {routes.map((item) => {
@@ -59,8 +70,13 @@ export const Navigation = () => {
           (item.href !== "" && pathname.startsWith(fullHref));
         const Icon = isActive ? item.activeIcon : item.icon;
 
+        const query =
+          currentMemberId && item.href === "/tasks"
+            ? `?assigneeId=${currentMemberId}`
+            : "";
+
         return (
-          <Link key={item.href} href={fullHref}>
+          <Link key={item.href} href={fullHref + query}>
             <div
               className={cn(
                 "flex items-center gap-2.5 p-2.5 rounded-full hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition",
