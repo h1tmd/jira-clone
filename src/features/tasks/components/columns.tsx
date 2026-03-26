@@ -11,8 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 import { TaskActions } from "./task-actions";
+import { Task, TaskStatus } from "../types";
 import { TaskDate } from "./task-date";
-import { Task } from "../types";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -105,8 +105,9 @@ export const columns: ColumnDef<Task>[] = [
     },
     cell: ({ row }) => {
       const dueDate = row.original.dueDate;
+      const isDone = row.original.status === TaskStatus.DONE;
 
-      return <TaskDate value={dueDate} />;
+      return <TaskDate value={dueDate} isDone={isDone} />;
     },
   },
   {

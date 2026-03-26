@@ -8,8 +8,8 @@ import { Badge } from "@/components/ui/badge";
 
 import { useEditTaskModal } from "../hooks/use-edit-task-modal";
 import { OverviewProperty } from "./overview-property";
+import { Task, TaskStatus } from "../types";
 import { TaskDate } from "./task-date";
-import { Task } from "../types";
 
 interface TaskOverviewProps {
   task: Task;
@@ -39,7 +39,11 @@ export const TaskOverview = ({ task }: TaskOverviewProps) => {
             <p className="text-sm font-medium">{task.assignee.name}</p>
           </OverviewProperty>
           <OverviewProperty label="Due Date">
-            <TaskDate value={task.dueDate} className="text-sm font-medium" />
+            <TaskDate
+              value={task.dueDate}
+              isDone={task.status === TaskStatus.DONE}
+              className="text-sm font-medium"
+            />
           </OverviewProperty>
           <OverviewProperty label="Status">
             <Badge variant={task.status}>
