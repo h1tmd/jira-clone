@@ -14,12 +14,14 @@ interface TimePickerProps {
   onChange: (date: Date) => void;
   className?: string;
   placeholder?: string;
+  showSeconds?: boolean;
 }
 
 export const TimePicker = ({
   value,
   onChange,
   className,
+  showSeconds,
   placeholder,
 }: TimePickerProps) => {
   return (
@@ -35,7 +37,15 @@ export const TimePicker = ({
           )}
         >
           <ClockIcon className="size-4 mr-2" />
-          {value ? value.toLocaleTimeString() : <span>{placeholder}</span>}
+          {value ? (
+            value.toLocaleTimeString([], {
+              hour: "numeric",
+              minute: "2-digit",
+              ...(showSeconds && { second: "2-digit" }),
+            })
+          ) : (
+            <span>{placeholder}</span>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="bg-background">
