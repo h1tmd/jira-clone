@@ -37,14 +37,11 @@ export const TimeBreadcrumbs = ({ task, project }: TimeBreadcrumbsProps) => {
       </Link>
       <ChevronRightIcon className="size-4 lg:size-5 text-muted-foreground" />
       <p className="text-sm lg:text-lg font-semibold">Time Tracking</p>
-      <Button
-        onClick={() => {}}
-        variant={"secondary"}
-        className="ml-auto"
-        size={"sm"}
-      >
-        <ShuffleIcon className="size-4 lg:mr-2" />
-        <span className="hidden lg:block">Change Task</span>
+      <Button variant={"secondary"} className="ml-auto" size={"sm"} asChild>
+        <Link href={`/workspaces/${workspaceId}/time-tracking`}>
+          <ShuffleIcon className="size-4 lg:mr-2" />
+          <span className="hidden lg:block">Change Task</span>
+        </Link>
       </Button>
     </div>
   );

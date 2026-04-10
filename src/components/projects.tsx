@@ -33,11 +33,19 @@ export const Projects = () => {
           <Link href={href} key={project.$id}>
             <div
               className={cn(
-                "flex items-center gap-2.5 p-2.5 rounded-full ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition cursor-pointer",
+                "group flex items-center gap-2.5 p-2.5 rounded-full ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition cursor-pointer",
                 isActive && "bg-sidebar-accent text-sidebar-accent-foreground",
               )}
             >
-              <ProjectAvatar image={project.imageUrl} name={project.name} />
+              <ProjectAvatar
+                image={project.imageUrl}
+                name={project.name}
+                fallbackClassName={cn(
+                  "group-hover:bg-sidebar-accent-foreground group-hover:text-sidebar-accent",
+                  isActive &&
+                    "bg-sidebar-accent-foreground text-sidebar-accent",
+                )}
+              />
               <span className="truncate">{project.name}</span>
             </div>
           </Link>

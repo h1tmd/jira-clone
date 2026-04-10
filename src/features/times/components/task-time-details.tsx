@@ -35,6 +35,19 @@ export const TaskTimeDetails = ({
     "destructive",
   );
 
+  // Group tracked sessions by date
+  const timesByDate = Object.values(
+    taskTimes.reduce<Record<string, Array<TaskTime>>>((result, time) => {
+      const date = new Date(time.dayTracked).toDateString();
+      if (!result[date]) {
+        result[date] = [];
+      }
+      result[date].push(time);
+      return result;
+    }, {}),
+  );
+  console.log(timesByDate);
+
   const dateToString = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
@@ -92,41 +105,57 @@ export const TaskTimeDetails = ({
               {getTotalTime(taskTimes)}
             </p>
           </CardContent>
-          <DottedSeparator className="px-7" />
+          {/* <DottedSeparator className="px-7" /> */}
           <CardContent className="mt-6">
             <p className="text-lg font-bold mb-2">Session History</p>
             <ul className="flex flex-col gap-y-2">
-              {taskTimes.map((taskTime) => (
-                <li key={taskTime.$id}>
-                  <Card className="shadow-none rounded-lg">
-                    <CardContent className="p-4 flex">
-                      <div className="flex flex-col">
-                        <p className="text-lg font-medium truncate">
-                          {dateToString(new Date(taskTime.dayTracked))}
-                        </p>
-                        <p className="text-muted-foreground">
-                          {secondsToString(taskTime.secondsTracked)}
-                        </p>
-                      </div>
-                      <div className="ml-auto flex gap-x-2 w-fit">
-                        <Button
-                          onClick={() => open(taskTime.$id)}
-                          size={"icon"}
-                          variant={"secondary"}
-                        >
-                          <PencilIcon className="size-4" />
-                        </Button>
+              {timesByDate.map((taskTimesInDate) => (
+                <li>
+                  <p className="text-lg font-medium mb-3 px-2">
+                    {dateToString(new Date(taskTimesInDate[0].dayTracked))}
+                  </p>
+                  <ul className="flex flex-col gap-y-2">
+                    {taskTimesInDate.map((taskTime) => (
+                      <Card className="shadow-none rounded-sm">
+                        <CardContent className="flex items-center justify-center p-3">
+                          <div className="flex flex-col">
+                            <p className="text-lg font-medium truncate">
+                              {new Date(taskTime.dayTracked).toLocaleString(
+                                "en-US",
+                                {
+                                  hour: "numeric",
+                                  minute: "numeric",
+                                  hour12: true,
+                                },
+                              )}
+                            </p>
+                            <p className="text-muted-foreground">
+                              {secondsToString(taskTime.secondsTracked)}
+                            </p>
+                          </div>
+                          <div className="ml-auto flex gap-x-2 w-fit">
+                            <Button
+                              onClick={() => open(taskTime.$id)}
+                              size={"icon"}
+                              variant={"secondary"}
+                              disabled={isPending}
+                            >
+                              <PencilIcon className="size-4" />
+                            </Button>
 
-                        <Button
-                          onClick={() => handleDelete(taskTime.$id)}
-                          size={"icon"}
-                          variant={"destructive"}
-                        >
-                          <TrashIcon className="size-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+                            <Button
+                              onClick={() => handleDelete(taskTime.$id)}
+                              size={"icon"}
+                              variant={"destructive"}
+                              disabled={isPending}
+                            >
+                              <TrashIcon className="size-4" />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </ul>
                 </li>
               ))}
             </ul>

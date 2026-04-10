@@ -7,6 +7,7 @@ import z from "zod";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 import { DatePicker } from "@/components/date-picker";
+import { TimePicker } from "@/components/time-picker";
 import { useConfirm } from "@/hooks/use-confirm";
 import { Button } from "@/components/ui/button";
 import { secondsToString } from "@/lib/utils";
@@ -82,11 +83,18 @@ export const ManualTime = () => {
   return (
     <div className="flex flex-col items-center">
       <AddDialog />
-      <DatePicker
-        value={inputDate}
-        onChange={(date) => setInputDate(date)}
-        className="w-fit mt-7"
-      />
+      <div className="flex flex-col md:flex-row border rounded-lg gap-2 items-center justify-center p-4 mt-7">
+        <DatePicker
+          value={inputDate}
+          onChange={(date) => setInputDate(date)}
+          className="w-fit"
+        />
+        <TimePicker
+          value={inputDate}
+          onChange={(date) => setInputDate(date)}
+          className="w-fit"
+        />
+      </div>
       <div className="py-7">
         <div className="flex justify-center items-center font-mono w-full text-5xl sm:text-7xl select-none">
           <Input
